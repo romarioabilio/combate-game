@@ -9,7 +9,7 @@ import game.pieces.Piece;
  * a primeira peça encontrada que pertença a ele para a direita (se possível).
  */
 public class SimplePlayer implements Player {
-    private String playerName;
+    private final String playerName;
 
     @Override
     public String getPlayerName() {
