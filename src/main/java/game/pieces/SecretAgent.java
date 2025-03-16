@@ -25,7 +25,7 @@ public class SecretAgent extends Piece {
             return new Feedback(message);
         }
 
-        return this.verifyBaseCases(piece);
+        return super.fight(piece);
     };
 
     @Override

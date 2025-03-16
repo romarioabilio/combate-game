@@ -50,10 +50,6 @@ public abstract class Piece {
     }
 
     public Feedback fight(Piece piece) {
-        return this.verifyBaseCases(piece);
-    };
-
-    protected Feedback verifyBaseCases(Piece piece) {
         if (piece.getClass().getSimpleName().equals("LandMine")) {
             board.setPiece(piece.posX, piece.posY, null);
             return new Feedback(String.format(
@@ -92,6 +88,7 @@ public abstract class Piece {
                 this.getRepresentation(), player, piece.getRepresentation(), piece.player, piece.posX, piece.posY
         ));
     };
+
 
     public int getStrength() {
         return strength;
