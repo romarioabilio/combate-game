@@ -20,7 +20,7 @@ public abstract class Piece {
      * Verifica se a peça pode se mover para a posição (newX, newY) de acordo com as regras.
      */
     public boolean canMove(int newX, int newY) {
-        return Math.abs(newX - posX) + Math.abs(newY - posY) == 1;
+        return Math.abs(newX - posX) + Math.abs(newY - posY) == 1 && Board.isValidPosition(newX, newY);
     }
 
     /**

@@ -25,6 +25,15 @@ public class Board {
         }
     }
 
+    public static boolean isValidPosition(int x, int y) {
+        return x >= 0 && x < 10 && y >= 0 && y < 10 && !Board.isLake(x, y);
+    }
+
+    public static boolean isLake(int x, int y) {
+        return ((((x == 4 && y == 2) || (x == 5 && y == 2)) || ((x == 4 && y == 3) || (x == 5 && y == 3))) ||
+                (((x == 4 && y == 6) || (x == 5 && y == 6)) || ((x == 4 && y == 7) || (x == 5 && y == 7))));
+    }
+
     /**
     * Adiciona posicionamento inicial do jogador ao tabuleiro
     */
@@ -44,7 +53,9 @@ public class Board {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
-                if (board[i][j] == null) {
+                if (Board.isLake(i, j)) {
+                    sb.append(String.format("[%-2s]", "L"));
+                } else if (board[i][j] == null) {
                     sb.append(String.format("[%-2s]", " "));
                 } else {
                     sb.append(String.format("[%-2s]", board[i][j].getRepresentation()));
