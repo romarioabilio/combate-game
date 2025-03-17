@@ -51,10 +51,19 @@ public class Board {
      */
     public String getFeedback() {
         StringBuilder sb = new StringBuilder();
+
+        sb.append("   ");
+        for (int j = 0; j < COLS; j++) {
+            sb.append(String.format(" %-2d ", j + 1));
+        }
+        sb.append("\n");
+
         for (int i = 0; i < ROWS; i++) {
+            sb.append(String.format("%-2s ", (char) ('A' + i)));
+
             for (int j = 0; j < COLS; j++) {
                 if (Board.isLake(i, j)) {
-                    sb.append(String.format("[%-2s]", "L"));
+                    sb.append(String.format("[%-2s]", "XX"));
                 } else if (board[i][j] == null) {
                     sb.append(String.format("[%-2s]", " "));
                 } else {
@@ -65,4 +74,5 @@ public class Board {
         }
         return sb.toString();
     }
+
 }
