@@ -1,5 +1,6 @@
 package game;
 
+import game.pieces.Piece;
 import game.players.Player;
 import game.players.SimplePlayer;
 
@@ -19,8 +20,10 @@ public class Game {
      * Inicia o jogo.
      */
     public void start() {
-        player1.initialMove();
-        player2.initialMove();
+        Piece[][] player1InitialMove = player1.initialMove(this.board);
+        Piece[][] player2InitialMove = player2.initialMove(this.board);
+        this.board.setPlayerInitialMove(player1InitialMove, 1);
+        this.board.setPlayerInitialMove(player2InitialMove, 2);
         System.out.println("Estado inicial do tabuleiro:");
         System.out.println(board.getFeedback());
 

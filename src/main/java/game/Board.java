@@ -26,6 +26,18 @@ public class Board {
     }
 
     /**
+    * Adiciona posicionamento inicial do jogador ao tabuleiro
+    */
+    public void setPlayerInitialMove(Piece[][] playerInitialMove, int player) {
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                int col = player == 1 ? i : i + 6;
+                this.setPiece(col, j, playerInitialMove[i][j]);
+            }
+        }
+    }
+
+    /**
      * Retorna uma representação em String do estado atual do tabuleiro.
      */
     public String getFeedback() {
@@ -33,9 +45,9 @@ public class Board {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
                 if (board[i][j] == null) {
-                    sb.append("[ ]");
+                    sb.append(String.format("[%-2s]", " "));
                 } else {
-                    sb.append("[").append(board[i][j].getRepresentation()).append("]");
+                    sb.append(String.format("[%-2s]", board[i][j].getRepresentation()));
                 }
             }
             sb.append("\n");

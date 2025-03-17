@@ -10,7 +10,7 @@ public interface Player {
      * Realiza a jogada inicial, posicionar as 40 peças nas 4 primeiras fileiras.
      * @param board o tabuleiro do jogo.
      */
-    Piece[][] initialMove();
+    Piece[][] initialMove(Board board);
 
 //    /**
 //     * Realiza uma jogada durante o jogo e retorna um feedback do estado atual do tabuleiro.
