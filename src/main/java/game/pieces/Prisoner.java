@@ -6,9 +6,9 @@ import game.Feedback;
 /**
  * Regra: não pode ser movido. O objetivo do jogo é resgatar o prisioneiro adversário.
  */
-public class Prisioner extends Piece {
+public class Prisoner extends Piece {
 
-    public Prisioner(String player, Board board) {
+    public Prisoner(String player, Board board) {
         super(0, player, board);
     }
 
@@ -23,7 +23,12 @@ public class Prisioner extends Piece {
     }
 
     @Override
+    public Feedback fight(Piece piece) {
+        throw new UnsupportedOperationException("Prisioneiro não pode batalhar");
+    }
+
+    @Override
     public String getRepresentation() {
-        return "PZ";
+        return "PS";
     }
 }

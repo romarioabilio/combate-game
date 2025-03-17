@@ -16,7 +16,7 @@ public class Game {
     }
 
     /**
-     * Método que inicia o jogo.
+     * Inicia o jogo.
      */
     public void start() {
         player1.initialMove();

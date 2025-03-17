@@ -9,7 +9,7 @@ import game.Board;
 public class Soldier extends Piece {
 
     public Soldier(String player, Board board) {
-        super(5, player, board);
+        super(2, player, board);
     }
 
     @Override

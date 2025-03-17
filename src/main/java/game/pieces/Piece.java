@@ -35,19 +35,60 @@ public abstract class Piece {
                 return this.fight(opponent);
             }
 
+            String message = String.format(
+                    "%s de %s foi movida de [%d, %d] para [%d, %d]",
+                    this.getRepresentation(), player, posX, posY, newX, newY
+            );
+
             board.setPiece(newX, newY, this);
             this.setPosition(newX, newY);
 
-            return new Feedback(String.format(
-                "%s de %s foi movida de [%d, %d] para [%d, %d]",
-                this.getRepresentation(), player, posX, posY, newX, newY
-            ));
+            return new Feedback(message);
         }
 
         return new Feedback("Jogada inválida, passou a vez");
     }
 
-    public abstract Feedback fight(Piece piece);
+    public Feedback fight(Piece piece) {
+        if (piece.getClass().getSimpleName().equals("LandMine")) {
+            board.setPiece(piece.posX, piece.posY, null);
+            return new Feedback(String.format(
+                    "%s de %s foi eliminado por uma mina terrestre em [%d, %d]",
+                    this.getRepresentation(), player, piece.posX, piece.posY
+            ));
+        }
+
+        if (piece.getClass().getSimpleName().equals("Prisioner")) {
+            return new Feedback(String.format("%s achou o prisioneiro!", this.getRepresentation()));
+        }
+
+        if (this.strength > piece.getStrength()) {
+            String message = String.format(
+                    "%s de %s eliminou %s de %s e foi movida de [%d, %d] para [%d, %d]",
+                    this.getRepresentation(), player, piece.getRepresentation(), piece.player, posX, posY, piece.posX, piece.posY
+            );
+
+            board.setPiece(piece.posX, piece.posY, this);
+            this.setPosition(piece.posX, piece.posY);
+            return new Feedback(message);
+        }
+
+        if (this.strength == piece.getStrength()) {
+            String message = String.format(
+                    "%s de %s e %s de %s tem a mesma força e se eliminaram",
+                    this.getRepresentation(), player, piece.getRepresentation(), piece.player
+            );
+
+            board.setPiece(piece.posX, piece.posY, null);
+            return new Feedback(message);
+        }
+
+        return new Feedback(String.format(
+                "%s de %s foi eliminado por %s de %s em [%d, %d]",
+                this.getRepresentation(), player, piece.getRepresentation(), piece.player, piece.posX, piece.posY
+        ));
+    };
+
 
     public int getStrength() {
         return strength;
