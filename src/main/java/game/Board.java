@@ -1,11 +1,17 @@
 package game;
 
 import game.pieces.Piece;
+import game.players.Player;
 
 public class Board {
+    private static final int MAX_NUMBER_OF_MOVES = 5000;
+
     private Piece[][] board;
     public static final int ROWS = 10;
     public static final int COLS = 10;
+    public Player player1;
+    public Player player2;
+    public int numberMoves;
 
     public Board() {
         board = new Piece[ROWS][COLS];
@@ -73,6 +79,62 @@ public class Board {
             sb.append("\n");
         }
         return sb.toString();
+    }
+
+    /**
+     * Retorna a indicação se o jogo acabou por um dos motivos:
+     *  - Algum player sem peças móveis
+     *  - Número máximo de jogadas
+     */
+    public Feedback isGameFinished() {
+        Player p = somePlayerHasMove();
+        if (p != null) {
+            return new Feedback(String.format("Fim do jogo, %s está sem peças", p.getPlayerName()));
+        }
+
+        if (numberMoves >= MAX_NUMBER_OF_MOVES) {
+            return new Feedback("Número máximo de jogadas alcançadas");
+        }
+
+        return null;
+    }
+
+    private Player somePlayerHasMove() {
+        boolean player1HasMovablePiece = false;
+        boolean player2HasMovablePiece = false;
+
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (board[i][j] != null) {
+                    Piece p = board[i][j];
+                    if (p.getPlayer().equals(player1.getPlayerName())) {
+                        if (isMovablePiece(p)) {
+                            player1HasMovablePiece = true;
+                        }
+                    } else if (p.getPlayer().equals(player2.getPlayerName())) {
+                        if (isMovablePiece(p)) {
+                            player2HasMovablePiece = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (player1HasMovablePiece && player2HasMovablePiece) {
+            return null;
+        } else if (!player1HasMovablePiece) {
+            return player1;
+        } else {
+            return player2;
+        }
+    };
+
+    private boolean isMovablePiece(Piece piece) {
+        if (piece == null) {
+            return false;
+        }
+
+        return !piece.getRepresentation().equals("M") && !piece.getRepresentation().equals("PS");
     }
 
 }

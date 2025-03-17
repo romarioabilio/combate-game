@@ -13,7 +13,9 @@ public class Game {
     public Game() {
         board = new Board();
         player1 = new SimplePlayer("Player1");
+        board.player1 = player1;
         player2 = new SimplePlayer("Player2");
+        board.player2 = player2;
     }
 
     /**
