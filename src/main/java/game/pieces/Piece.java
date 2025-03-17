@@ -1,7 +1,7 @@
 package game.pieces;
 
 import game.Board;
-import game.Feedback;
+import game.feedbacks.*;
 
 public abstract class Piece {
     protected int strength;
@@ -35,58 +35,42 @@ public abstract class Piece {
                 return this.fight(opponent);
             }
 
-            String message = String.format(
-                    "%s de %s foi movida de [%d, %d] para [%d, %d]",
-                    this.getRepresentation(), player, posX, posY, newX, newY
-            );
-
             board.setPiece(newX, newY, this);
             this.setPosition(newX, newY);
 
-            return new Feedback(message);
+            return new MoveFeedback(this);
         }
 
-        return new Feedback("Jogada inválida, passou a vez");
+        return new InvalidMoveFeedback();
     }
 
     public Feedback fight(Piece piece) {
         if (piece.getClass().getSimpleName().equals("LandMine")) {
             board.setPiece(piece.posX, piece.posY, null);
-            return new Feedback(String.format(
-                    "%s de %s foi eliminado por uma mina terrestre em [%d, %d]",
-                    this.getRepresentation(), player, piece.posX, piece.posY
-            ));
+            return new LandmineFeedback(this, piece);
         }
 
         if (piece.getClass().getSimpleName().equals("Prisioner")) {
-            return new Feedback(String.format("%s achou o prisioneiro!", this.getRepresentation()));
+            return new PrisonerFeedback(this);
         }
 
         if (this.strength > piece.getStrength()) {
-            String message = String.format(
-                    "%s de %s eliminou %s de %s e foi movida de [%d, %d] para [%d, %d]",
-                    this.getRepresentation(), player, piece.getRepresentation(), piece.player, posX, posY, piece.posX, piece.posY
-            );
+            int fromX = this.posX;
+            int fromY = this.posY;
 
             board.setPiece(piece.posX, piece.posY, this);
             this.setPosition(piece.posX, piece.posY);
-            return new Feedback(message);
+            return new AttackFeedback(this, piece, fromX, fromY, piece.posX, piece.posY);
         }
 
         if (this.strength == piece.getStrength()) {
-            String message = String.format(
-                    "%s de %s e %s de %s tem a mesma força e se eliminaram",
-                    this.getRepresentation(), player, piece.getRepresentation(), piece.player
-            );
-
             board.setPiece(piece.posX, piece.posY, null);
-            return new Feedback(message);
+            return new EqualStrengthFeedback(this, piece);
         }
 
-        return new Feedback(String.format(
-                "%s de %s foi eliminado por %s de %s em [%d, %d]",
-                this.getRepresentation(), player, piece.getRepresentation(), piece.player, piece.posX, piece.posY
-        ));
+        // Se o atacante perde:
+        board.setPiece(piece.posX, piece.posY, piece);
+        return new DeffeatFeedback(this, piece, piece.getPosX(), piece.getPosY());
     };
 
 

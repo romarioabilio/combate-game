@@ -1,5 +1,8 @@
 package game;
 
+import game.feedbacks.AttackFeedback;
+import game.feedbacks.DeffeatFeedback;
+import game.feedbacks.EqualStrengthFeedback;
 import game.pieces.Captain;
 import game.pieces.Colonel;
 import game.pieces.SecretAgent;
@@ -8,6 +11,7 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FightTest {
     @SneakyThrows
@@ -20,7 +24,8 @@ public class FightTest {
         board.setPiece(0, 2, c2);
         var f = c1.move(0, 2, board);
 
-        assertEquals("CP de player1 e CP de player2 tem a mesma força e se eliminaram", f.getMessage());
+        assertTrue(f instanceof EqualStrengthFeedback);
+        assertEquals("CP de player1 e CP de player2 possuem a mesma força e se eliminaram", f.getMessage());
     }
 
     @SneakyThrows
@@ -33,7 +38,8 @@ public class FightTest {
         board.setPiece(0, 2, s);
         var f = cr.move(0, 2, board);
 
-        assertEquals("CR de player1 eliminou S de player2 e foi movida de [0, 1] para [0, 2]", f.getMessage());
+        assertTrue(f instanceof AttackFeedback);
+        assertEquals("CR de player1 eliminou S de player2 e se moveu de [0, 1] para [0, 2]", f.getMessage());
     }
 
     @SneakyThrows
@@ -46,6 +52,7 @@ public class FightTest {
         board.setPiece(0, 2, cr);
         var f = s.move(0, 2, board);
 
+        assertTrue(f instanceof DeffeatFeedback);
         assertEquals("S de player1 foi eliminado por CR de player2 em [0, 2]", f.getMessage());
     }
 
@@ -59,7 +66,8 @@ public class FightTest {
         board.setPiece(0, 2, l);
         var f = sa.move(0, 2, board);
 
-        assertEquals("AS de player1 eliminou CR de player2 e foi movida de [0, 1] para [0, 2]", f.getMessage());
+        assertTrue(f instanceof AttackFeedback);
+        assertEquals("AS de player1 eliminou CR de player2 e se moveu de [0, 1] para [0, 2]", f.getMessage());
     }
 
     @SneakyThrows
@@ -72,6 +80,7 @@ public class FightTest {
         board.setPiece(0, 2, sa);
         var f = l.move(0, 2, board);
 
-        assertEquals("CR de player1 eliminou AS de player2 e foi movida de [0, 1] para [0, 2]", f.getMessage());
+        assertTrue(f instanceof AttackFeedback);
+        assertEquals("CR de player1 eliminou AS de player2 e se moveu de [0, 1] para [0, 2]", f.getMessage());
     }
 }

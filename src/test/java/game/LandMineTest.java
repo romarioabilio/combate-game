@@ -1,10 +1,12 @@
 package game;
 
+import game.feedbacks.LandMineDeactivationFeedback;
+import game.feedbacks.LandmineFeedback;
 import game.pieces.*;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LandMineTest {
 
@@ -18,6 +20,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = c.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("CP de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -31,6 +34,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = col.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("CR de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -44,6 +48,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = corp.move(0, 2, board);
 
+        assertTrue(f instanceof LandMineDeactivationFeedback);
         assertEquals("C de player1 desativou uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -57,6 +62,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = g.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("G de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -70,6 +76,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = lt.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("T de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -83,6 +90,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = mj.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("MJ de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -96,6 +104,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = sg.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("SG de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -109,6 +118,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = sa.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("AS de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -122,6 +132,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = s.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("S de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 
@@ -135,6 +146,7 @@ public class LandMineTest {
         board.setPiece(0, 2, l);
         var f = sg.move(0, 2, board);
 
+        assertTrue(f instanceof LandmineFeedback);
         assertEquals("ST de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
     }
 

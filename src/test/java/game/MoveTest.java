@@ -1,13 +1,14 @@
 package game;
 
+import game.feedbacks.InvalidMoveFeedback;
+import game.feedbacks.MoveFeedback;
 import game.pieces.LandMine;
 import game.pieces.Prisoner;
 import game.pieces.Sargent;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MoveTest {
 
