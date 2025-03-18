@@ -2,7 +2,7 @@ package game.pieces;
 
 import game.Board;
 
-public class OpponentPiece extends Piece{
+public class OpponentPiece extends Piece {
 
     public OpponentPiece(Board board) {
         super(999, board);

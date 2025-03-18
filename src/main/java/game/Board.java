@@ -7,8 +7,7 @@ import game.pieces.PieceAction;
 import game.pieces.QuantityPerPiece;
 import game.players.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Board {
     private static final int MAX_NUMBER_OF_MOVES = 5000;
@@ -16,9 +15,12 @@ public class Board {
     private Piece[][] board;
     public static final int ROWS = 10;
     public static final int COLS = 10;
-    public game.players.Player player1;
+    public Player player1;
+    private final Deque<Piece> lastPiecesPlayedByP1 = new ArrayDeque<>(MAX_CONSECUTIVE_MOVES_SAME_PIECE);
     public Player player2;
+    private final Deque<Piece> lastPiecesPlayedByP2 = new ArrayDeque<>(MAX_CONSECUTIVE_MOVES_SAME_PIECE);
     public int numberMoves;
+    public static final Integer MAX_CONSECUTIVE_MOVES_SAME_PIECE = 3;
     public static final String PLAYER1_COLOR_OPEN = "\u001B[32m";
     public static final String PLAYER2_COLOR_OPEN = "\u001B[31m";
     public static final String LAKE_COLOR_OPEN = "\u001B[34m";
@@ -216,31 +218,42 @@ public class Board {
     }
 
     public Feedback executeAction(PieceAction action) {
-        if (action != null) {
+        if (action == null || action.getPiece() == null) {
+            return new InvalidMoveFeedback();
+        }
+
+        try {
             Piece piece = action.getPiece();
             int newPosX = action.getNewPosX();
             int newPosY = action.getNewPosY();
 
-            if (piece == null || !isValidPosition(newPosX, newPosY)) {
-                return new InvalidMoveFeedback();
-            }
-
-            Piece targetPiece = getPiece(newPosX, newPosY);
-
-            if (targetPiece != null) {
-                Feedback fightFeedback = piece.fight(targetPiece);
-                if (fightFeedback != null) {
-                    return fightFeedback;
-                }
-            }
-
-            setPiece(piece.getPosX(), piece.getPosY(), null);
-            setPiece(newPosX, newPosY, piece);
-
             numberMoves++;
 
-            return new MoveFeedback(piece);
+            if (addLastPiecesPlayed(piece)) {
+                return piece.move(newPosX, newPosY, this);
+            }
+
+            return new InvalidMoveFeedback("Você não pode mover a mesma peça mais de 3 vezes");
+        } catch (Exception e) {
+            return new InvalidMoveFeedback(e.getMessage());
         }
-        return new InvalidMoveFeedback();
+    }
+
+    public boolean addLastPiecesPlayed(Piece piece) {
+        var lastPiecesPlayed = player1.getPlayerName().equals(piece.getPlayer()) ? lastPiecesPlayedByP1 : lastPiecesPlayedByP2;
+
+        var result = true;
+        if (lastPiecesPlayed.size() == MAX_CONSECUTIVE_MOVES_SAME_PIECE) {
+            if (lastPiecesPlayed.stream().allMatch(p -> p.equals(piece))) {
+                result = false;
+            }
+        }
+
+        if (lastPiecesPlayed.size() == MAX_CONSECUTIVE_MOVES_SAME_PIECE) {
+            lastPiecesPlayed.removeLast();
+        }
+        lastPiecesPlayed.push(piece);
+
+        return result;
     }
 }

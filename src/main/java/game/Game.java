@@ -34,9 +34,9 @@ public class Game {
      */
     public void start() {
         Piece[][] player1Setup = player1.setup(this.board);
-        var player1SetupIsValid = !this.board.addPlayerSetup(player1Setup, 1);
+        var player1SetupIsValid = this.board.addPlayerSetup(player1Setup, 1);
         Piece[][] player2Setup = player2.setup(this.board);
-        var player2SetupIsValid = !this.board.addPlayerSetup(player2Setup, 2);
+        var player2SetupIsValid = this.board.addPlayerSetup(player2Setup, 2);
 
         if (!player1SetupIsValid && !player2SetupIsValid) {
             System.out.println("Jogo concluído por setup inválido de ambos jogadores!");
@@ -72,7 +72,7 @@ public class Game {
                     System.out.println(board.getFeedback());
                 } else {
                     // Jogada do Player2
-                    PieceAction action = player2.play(board.getHiddenView(player1.getPlayerName()));
+                    PieceAction action = player2.play(board.getHiddenView(player2.getPlayerName()));
                     roundFeedback = board.executeAction(action);
                     System.out.println("Player2: " + roundFeedback.getMessage());
                     System.out.println(board.getFeedback());
