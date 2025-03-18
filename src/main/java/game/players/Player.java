@@ -2,6 +2,7 @@ package game.players;
 
 import game.Board;
 import game.pieces.Piece;
+import game.pieces.PieceAction;
 
 public interface Player {
     String getPlayerName();
@@ -12,12 +13,8 @@ public interface Player {
      */
     Piece[][] initialMove(Board board);
 
-//    /**
-//     * Realiza uma jogada durante o jogo e retorna um feedback do estado atual do tabuleiro.
-//     * @param board o tabuleiro do jogo.
-//     * @return feedback em forma de String.
-//     */
-//    String play(Board board);
-
-
+    /**
+     * Prepara uma jogada e retorna um objeto da jogada para ser executado pelo Board.
+     */
+    PieceAction play(Board board);
 }

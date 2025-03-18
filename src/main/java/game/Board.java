@@ -1,7 +1,9 @@
 package game;
 
+import game.feedbacks.*;
 import game.pieces.OpponentPiece;
 import game.pieces.Piece;
+import game.pieces.PieceAction;
 import game.players.Player;
 
 public class Board {
@@ -10,7 +12,7 @@ public class Board {
     private Piece[][] board;
     public static final int ROWS = 10;
     public static final int COLS = 10;
-    public Player player1;
+    public game.players.Player player1;
     public Player player2;
     public int numberMoves;
     public static final String PLAYER1_COLOR_OPEN = "\u001B[32m";
@@ -23,6 +25,9 @@ public class Board {
     }
 
     public Board(Board original) {
+        player1 = original.player1;
+        player2 = original.player2;
+        numberMoves = original.numberMoves;
         board = new Piece[ROWS][COLS];
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLS; j++) {
@@ -89,7 +94,7 @@ public class Board {
                     sb.append(String.format("[%-2s]", " "));
                 } else {
                     Piece piece = board[i][j];
-                    String playerColor = piece.getPlayer().equals(player1.getPlayerName()) ? PLAYER1_COLOR_OPEN : PLAYER2_COLOR_OPEN;
+                    String playerColor = piece.getPlayer() != null && piece.getPlayer().equals(player1.getPlayerName()) ? PLAYER1_COLOR_OPEN : PLAYER2_COLOR_OPEN;
                     sb.append(String.format("[%s%-2s%s]", playerColor, piece.getRepresentation(), COLOR_CLOSE));
                 }
             }
@@ -125,11 +130,11 @@ public class Board {
     public Feedback isGameFinished() {
         Player p = somePlayerHasMove();
         if (p != null) {
-            return new Feedback(String.format("Fim do jogo, %s está sem peças", p.getPlayerName()));
+            return new PlayerWithoutPiecesFeedback();
         }
 
         if (numberMoves >= MAX_NUMBER_OF_MOVES) {
-            return new Feedback("Número máximo de jogadas alcançadas");
+            return new MaxNumberOfMovesFeedback();
         }
 
         return null;
@@ -163,7 +168,7 @@ public class Board {
         } else {
             return player2;
         }
-    };
+    }
 
     private boolean isMovablePiece(Piece piece) {
         if (piece == null) {
@@ -173,4 +178,32 @@ public class Board {
         return !piece.getRepresentation().equals("M") && !piece.getRepresentation().equals("PS");
     }
 
+    public Feedback executeAction(PieceAction action) {
+        if (action != null) {
+            Piece piece = action.getPiece();
+            int newPosX = action.getNewPosX();
+            int newPosY = action.getNewPosY();
+
+            if (piece == null || !isValidPosition(newPosX, newPosY)) {
+                return new InvalidMoveFeedback();
+            }
+
+            Piece targetPiece = getPiece(newPosX, newPosY);
+
+            if (targetPiece != null) {
+                Feedback fightFeedback = piece.fight(targetPiece);
+                if (fightFeedback != null) {
+                    return fightFeedback;
+                }
+            }
+
+            setPiece(piece.getPosX(), piece.getPosY(), null);
+            setPiece(newPosX, newPosY, piece);
+
+            numberMoves++;
+
+            return new MoveFeedback(piece);
+        }
+        return new InvalidMoveFeedback();
+    }
 }
