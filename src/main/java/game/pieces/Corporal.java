@@ -13,6 +13,10 @@ public class Corporal extends Piece {
         super(3, player, board);
     }
 
+    public Corporal(Corporal original, Board newBoard) {
+        super(original, newBoard);
+    }
+
     @Override
     public Feedback fight(Piece piece) {
         if (piece.getClass().getSimpleName().equals("LandMine")) {
@@ -27,5 +31,10 @@ public class Corporal extends Piece {
     @Override
     public String getRepresentation() {
         return "C";
+    }
+
+    @Override
+    public Corporal copy(Board board) {
+        return new Corporal(this, board);
     }
 }

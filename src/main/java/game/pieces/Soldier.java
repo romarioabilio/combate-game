@@ -12,6 +12,10 @@ public class Soldier extends Piece {
         super(2, player, board);
     }
 
+    public Soldier(Soldier original, Board newBoard) {
+        super(original, newBoard);
+    }
+
     @Override
     public boolean canMove(int newX, int newY) {
         // Permite apenas movimento em linha reta (horizontal ou vertical)
@@ -36,5 +40,10 @@ public class Soldier extends Piece {
     @Override
     public String getRepresentation() {
         return "S";
+    }
+
+    @Override
+    public Soldier copy(Board board) {
+        return new Soldier(this, board);
     }
 }

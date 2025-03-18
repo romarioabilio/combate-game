@@ -8,8 +8,17 @@ public class Major extends Piece {
         super(8, player, board);
     }
 
+    public Major(Major original, Board newBoard) {
+        super(original, newBoard);
+    }
+
     @Override
     public String getRepresentation() {
         return "MJ";
+    }
+
+    @Override
+    public Major copy(Board board) {
+        return new Major(this, board);
     }
 }

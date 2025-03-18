@@ -10,9 +10,9 @@ public class LandmineFeedback extends Feedback {
 
     private static String formateMessage(Piece victim, Piece landMine) {
         return String.format(
-                "%s de %s foi eliminado por uma mina terrestre em [%d, %d]",
+                "%s de %s foi eliminado por uma mina terrestre em [%s, %d]",
                 victim.getRepresentation(), victim.getPlayer(),
-                landMine.getPosX(), landMine.getPosY()
+                convertIntToAlfa(landMine.getPosX()), (landMine.getPosY() + 1)
         );
     }
 }

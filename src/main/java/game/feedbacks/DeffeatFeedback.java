@@ -10,10 +10,10 @@ public class DeffeatFeedback extends Feedback {
 
     private static String formateMessage(Piece attacker, Piece defender, int toX, int toY) {
         return String.format(
-                "%s de %s foi eliminado por %s de %s em [%d, %d]",
+                "%s de %s foi eliminado por %s de %s em [%s, %d]",
                 attacker.getRepresentation(), attacker.getPlayer(),
                 defender.getRepresentation(), defender.getPlayer(),
-                toX, toY
+                convertIntToAlfa(toX), (toY + 1)
         );
     }
 }

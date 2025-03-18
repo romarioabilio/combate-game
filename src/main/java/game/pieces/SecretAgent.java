@@ -13,6 +13,10 @@ public class SecretAgent extends Piece {
         super(1, player, board);
     }
 
+    public SecretAgent(SecretAgent original, Board newBoard) {
+        super(original, newBoard);
+    }
+
     @Override
     public Feedback fight(Piece piece) {
         if (piece.getClass().getSimpleName().equals("Colonel")) {
@@ -32,5 +36,10 @@ public class SecretAgent extends Piece {
     @Override
     public String getRepresentation() {
         return "AS";
+    }
+
+    @Override
+    public SecretAgent copy(Board board) {
+        return new SecretAgent(this, board);
     }
 }

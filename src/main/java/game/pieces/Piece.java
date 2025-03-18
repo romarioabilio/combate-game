@@ -16,6 +16,19 @@ public abstract class Piece {
         this.board = board;
     }
 
+    public Piece(int strength, Board board) {
+        this.strength = strength;
+        this.board = board;
+    }
+
+    public Piece(Piece piece, Board board) {
+        this.board = board;
+        this.strength = piece.getStrength();
+        this.player = piece.getPlayer();
+        this.posX = piece.getPosX();
+        this.posY = piece.getPosY();
+    }
+
     /**
      * Verifica se a peça pode se mover para a posição (newX, newY) de acordo com as regras.
      */
@@ -102,4 +115,6 @@ public abstract class Piece {
     public String getRepresentation() {
         return "P";
     }
+
+    public abstract Piece copy(Board newBoard);
 }

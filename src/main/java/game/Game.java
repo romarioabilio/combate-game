@@ -1,22 +1,33 @@
 package game;
 
+import game.feedbacks.Feedback;
+import game.feedbacks.PrisonerFeedback;
 import game.pieces.Piece;
+import game.pieces.PieceAction;
 import game.players.Player;
 import game.players.SimplePlayer;
+
+import java.util.Random;
 
 public class Game {
     private Board board;
     private Player player1;
     private Player player2;
-    private Integer round = 0;
+    private int round = 0;
 
-    public Game() {
+    public Game(Player player1, Player player2) {
         board = new Board();
-        player1 = new SimplePlayer("Player1");
         board.player1 = player1;
-        player2 = new SimplePlayer("Player2");
         board.player2 = player2;
+        this.player1 = player1;
+        this.player2 = player2;
     }
+
+    private void increaseRound() {
+        this.round++;
+    }
+
+    private int getRound() { return round; }
 
     /**
      * Inicia o jogo.
@@ -29,25 +40,54 @@ public class Game {
         System.out.println("Estado inicial do tabuleiro:");
         System.out.println(board.getFeedback());
 
-//        // Loop simples para alternar as jogadas (10 rodadas para demonstração)
-//        int rounds = 10;
-//        for (int i = 1; i <= rounds; i++) {
-//            System.out.println("Rodada " + i + ":");
-//
-//            // Jogada do Player1
-//            Feedback feedback1 = player1.play(board);
-//            System.out.println("Player1: " + feedback1);
-//            System.out.println(board.getFeedback());
-//
-//            // Jogada do Player2
-//            Feedback feedback2 = player2.play(board);
-//            System.out.println("Player2: " + feedback2);
-//            System.out.println(board.getFeedback());
-//        }
+        Random rand = new Random();
+        boolean actualPlayer = rand.nextBoolean();
+
+        game:
+        while (true) {
+            System.out.println("Rodada " + this.getRound() + ":");
+
+            for (int i = 0; i < 2; i++) {
+                Feedback roundFeedback = null;
+                if (actualPlayer) {
+                    // Jogada do Player1
+                    PieceAction action = player1.play(board.getHiddenView(player1.getPlayerName()));
+                    roundFeedback = board.executeAction(action);
+                    System.out.println("Player1: " + roundFeedback.getMessage());
+                    System.out.println(board.getFeedback());
+                } else {
+                    // Jogada do Player2
+                    PieceAction action = player2.play(board.getHiddenView(player1.getPlayerName()));
+                    roundFeedback = board.executeAction(action);
+                    System.out.println("Player2: " + roundFeedback.getMessage());
+                    System.out.println(board.getFeedback());
+                }
+
+                if (roundFeedback instanceof PrisonerFeedback) {
+                    String playerName = actualPlayer ? player1.getPlayerName() : player2.getPlayerName();
+
+                    System.out.println("Jogo concluído com sucesso!!!");
+                    System.out.println("Parabéns ao jogador " + playerName + "!!!");
+                    break game;
+                }
+
+                actualPlayer = !actualPlayer;
+                Feedback actualState = board.isGameFinished();
+                if (actualState != null){
+                    System.out.println(actualState.getMessage());
+                    break game;
+                }
+            }
+            this.increaseRound();
+        }
     }
 
     public static void main(String[] args) {
-        Game game = new Game();
+
+        SimplePlayer player1 = new SimplePlayer("Player1");
+        SimplePlayer player2 = new SimplePlayer("Player2");
+
+        Game game = new Game(player1, player2);
         game.start();
     }
 }

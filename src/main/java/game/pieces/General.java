@@ -8,8 +8,17 @@ public class General extends Piece {
         super(10, player, board);
     }
 
+    public General(General original, Board newBoard) {
+        super(original, newBoard);
+    }
+
     @Override
     public String getRepresentation() {
         return "G";
+    }
+
+    @Override
+    public General copy(Board board) {
+        return new General(this, board);
     }
 }

@@ -12,6 +12,10 @@ public class Prisoner extends Piece {
         super(0, player, board);
     }
 
+    public Prisoner(Prisoner original, Board newBoard) {
+        super(original, newBoard);
+    }
+    
     @Override
     public boolean canMove(int newX, int newY) {
         return false;
@@ -30,5 +34,10 @@ public class Prisoner extends Piece {
     @Override
     public String getRepresentation() {
         return "PS";
+    }
+
+    @Override
+    public Prisoner copy(Board board) {
+        return new Prisoner(this, board);
     }
 }
