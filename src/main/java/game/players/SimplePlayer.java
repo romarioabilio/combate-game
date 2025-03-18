@@ -1,7 +1,13 @@
 package game.players;
 
-import game.pieces.SecretAgent;
+import game.Board;
+import game.pieces.PieceFactory;
+import game.pieces.QuantityPerPiece;
 import game.pieces.Piece;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Implementação simples de um Player.
@@ -24,15 +30,30 @@ public class SimplePlayer implements Player {
         this.playerName = playerName;
     }
 
-    public Piece[][] initialMove() {
+    /**
+     * Posicina as peças no tabuleiro
+     */
+    public Piece[][] initialMove(Board board) {
+        /**
+         * Jogador que posiciona suas peças de forma aleatória
+         */
         var result = new Piece[4][10];
-
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 10; j++) {
-
+        List<String> piecesRepresentations = new ArrayList<>();
+        for (QuantityPerPiece piece : QuantityPerPiece.values()) {
+            int quantity = piece.getQuantity();
+            for (int i = 0; i < quantity; i++) {
+                piecesRepresentations.add(piece.getCode());
             }
         }
-
+        Collections.shuffle(piecesRepresentations);
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                String pieceRepresentation = piecesRepresentations.get(index);
+                result[i][j] = PieceFactory.createPiece(pieceRepresentation, this.playerName, board);
+                index++;
+            }
+        }
         return result;
     }
 
