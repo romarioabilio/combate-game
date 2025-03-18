@@ -1,7 +1,7 @@
 package game.pieces;
 
 import game.Board;
-import game.Feedback;
+import game.feedbacks.Feedback;
 
 /**
  * Regra: não pode ser movido. O objetivo do jogo é resgatar o prisioneiro adversário.

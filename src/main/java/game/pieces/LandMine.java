@@ -1,7 +1,7 @@
 package game.pieces;
 
 import game.Board;
-import game.Feedback;
+import game.feedbacks.Feedback;
 
 /**
  * Regra especial: não pode ser movida; se uma peça atacar a mina, ambas são eliminadas (exceto se for o Cabo, que a desativa).

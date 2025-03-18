@@ -1,7 +1,8 @@
 package game.pieces;
 
 import game.Board;
-import game.Feedback;
+import game.feedbacks.Feedback;
+import game.feedbacks.LandMineDeactivationFeedback;
 
 /**
  * Regra especial: É o único que pode desativar minas terrestres.
@@ -15,13 +16,9 @@ public class Corporal extends Piece {
     @Override
     public Feedback fight(Piece piece) {
         if (piece.getClass().getSimpleName().equals("LandMine")) {
-            String message = String.format(
-                    "%s de %s desativou uma mina terrestre em [%d, %d]",
-                    this.getRepresentation(), player, piece.posX, piece.posY
-            );
             board.setPiece(piece.posX, piece.posY, this);
             this.setPosition(piece.posX, piece.posY);
-            return new Feedback(message);
+            return new LandMineDeactivationFeedback(this);
         }
 
         return super.fight(piece);
