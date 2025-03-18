@@ -12,6 +12,10 @@ public class Board {
     public Player player1;
     public Player player2;
     public int numberMoves;
+    public static final String PLAYER1_COLOR_OPEN = "\u001B[32m";
+    public static final String PLAYER2_COLOR_OPEN = "\u001B[31m";
+    public static final String LAKE_COLOR_OPEN = "\u001B[34m";
+    public static final String COLOR_CLOSE = "\u001B[0m";
 
     public Board() {
         board = new Piece[ROWS][COLS];
@@ -35,7 +39,7 @@ public class Board {
         return x >= 0 && x < 10 && y >= 0 && y < 10 && !Board.isLake(x, y);
     }
 
-    public static boolean isLake(int x, int y) {
+    private static boolean isLake(int x, int y) {
         return ((((x == 4 && y == 2) || (x == 5 && y == 2)) || ((x == 4 && y == 3) || (x == 5 && y == 3))) ||
                 (((x == 4 && y == 6) || (x == 5 && y == 6)) || ((x == 4 && y == 7) || (x == 5 && y == 7))));
     }
@@ -69,11 +73,13 @@ public class Board {
 
             for (int j = 0; j < COLS; j++) {
                 if (Board.isLake(i, j)) {
-                    sb.append(String.format("[%-2s]", "XX"));
+                    sb.append(String.format("[%s%-2s%s]", LAKE_COLOR_OPEN, "XX", COLOR_CLOSE));
                 } else if (board[i][j] == null) {
                     sb.append(String.format("[%-2s]", " "));
                 } else {
-                    sb.append(String.format("[%-2s]", board[i][j].getRepresentation()));
+                    Piece piece = board[i][j];
+                    String playerColor = piece.getPlayer().equals(player1.getPlayerName()) ? PLAYER1_COLOR_OPEN : PLAYER2_COLOR_OPEN;
+                    sb.append(String.format("[%s%-2s%s]", playerColor, piece.getRepresentation(), COLOR_CLOSE));
                 }
             }
             sb.append("\n");
