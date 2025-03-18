@@ -32,7 +32,7 @@ public class SimplePlayer implements Player {
     /**
      * Posicina as peças no tabuleiro
      */
-    public Piece[][] initialMove(Board board) {
+    public Piece[][] setup(Board board) {
         /**
          * Jogador que posiciona suas peças de forma aleatória
          */

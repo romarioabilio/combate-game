@@ -10,9 +10,9 @@ import game.players.SimplePlayer;
 import java.util.Random;
 
 public class Game {
-    private Board board;
-    private Player player1;
-    private Player player2;
+    private final Board board;
+    private final Player player1;
+    private final Player player2;
     private int round = 0;
 
     public Game(Player player1, Player player2) {
@@ -33,10 +33,18 @@ public class Game {
      * Inicia o jogo.
      */
     public void start() {
-        Piece[][] player1InitialMove = player1.initialMove(this.board);
-        Piece[][] player2InitialMove = player2.initialMove(this.board);
-        this.board.setPlayerInitialMove(player1InitialMove, 1);
-        this.board.setPlayerInitialMove(player2InitialMove, 2);
+        Piece[][] player1Setup = player1.setup(this.board);
+        Piece[][] player2Setup = player2.setup(this.board);
+        if (!this.board.addPlayerSetup(player1Setup, 1)) {
+            System.out.println("Jogo concluído por setup inválido!");
+            System.out.println("Jogador " + player2.getPlayerName() + " venceu o jogo!");
+            return;
+        }
+        if (!this.board.addPlayerSetup(player2Setup, 2)) {
+            System.out.println("Jogo concluído por setup inválido!");
+            System.out.println("Jogador " + player1.getPlayerName() + " venceu o jogo!");
+            return;
+        }
         System.out.println("Estado inicial do tabuleiro:");
         System.out.println(board.getFeedback());
 

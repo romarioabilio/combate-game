@@ -11,7 +11,7 @@ public interface Player {
      * Realiza a jogada inicial, posicionar as 40 peças nas 4 primeiras fileiras.
      * @param board o tabuleiro do jogo.
      */
-    Piece[][] initialMove(Board board);
+    Piece[][] setup(Board board);
 
     /**
      * Prepara uma jogada e retorna um objeto da jogada para ser executado pelo Board.

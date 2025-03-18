@@ -4,7 +4,11 @@ import game.feedbacks.*;
 import game.pieces.OpponentPiece;
 import game.pieces.Piece;
 import game.pieces.PieceAction;
+import game.pieces.QuantityPerPiece;
 import game.players.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Board {
     private static final int MAX_NUMBER_OF_MOVES = 5000;
@@ -60,16 +64,49 @@ public class Board {
                 (((x == 4 && y == 6) || (x == 5 && y == 6)) || ((x == 4 && y == 7) || (x == 5 && y == 7))));
     }
 
+    public boolean isValidSetup(Piece[][] playerSetup) {
+        Map<String, Integer> actualCounts = new HashMap<>();
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                Piece piece = playerSetup[i][j];
+                if (piece != null) {
+                    String code = piece.getRepresentation();
+                    actualCounts.put(code, actualCounts.getOrDefault(code, 0) + 1);
+                }
+            }
+        }
+
+        for (QuantityPerPiece qpp : QuantityPerPiece.values()) {
+            String code = qpp.getCode();
+            int expected = qpp.getQuantity();
+            int actual = actualCounts.getOrDefault(code, 0);
+
+            if (actual != expected) {
+                System.out.println("Erro: Esperado " + expected + " peças de " + code + ", mas encontrado " + actual);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
     * Adiciona posicionamento inicial do jogador ao tabuleiro
     */
-    public void setPlayerInitialMove(Piece[][] playerInitialMove, int player) {
+    public boolean addPlayerSetup(Piece[][] playerSetup, int player) {
+        if (!isValidSetup(playerSetup)) {
+            return false;
+        }
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
                 int col = player == 1 ? i : i + 6;
-                this.setPiece(col, j, playerInitialMove[i][j]);
+                this.setPiece(col, j, playerSetup[i][j]);
             }
         }
+
+        return true;
     }
 
     /**
