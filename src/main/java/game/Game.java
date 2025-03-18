@@ -34,17 +34,24 @@ public class Game {
      */
     public void start() {
         Piece[][] player1Setup = player1.setup(this.board);
+        var player1SetupIsValid = !this.board.addPlayerSetup(player1Setup, 1);
         Piece[][] player2Setup = player2.setup(this.board);
-        if (!this.board.addPlayerSetup(player1Setup, 1)) {
+        var player2SetupIsValid = !this.board.addPlayerSetup(player2Setup, 2);
+
+        if (!player1SetupIsValid && !player2SetupIsValid) {
+            System.out.println("Jogo concluído por setup inválido de ambos jogadores!");
+            System.out.println("Jogo empatado!");
+            return;
+        } else if (!player1SetupIsValid) {
             System.out.println("Jogo concluído por setup inválido!");
             System.out.println("Jogador " + player2.getPlayerName() + " venceu o jogo!");
             return;
-        }
-        if (!this.board.addPlayerSetup(player2Setup, 2)) {
+        } else if (!player2SetupIsValid) {
             System.out.println("Jogo concluído por setup inválido!");
             System.out.println("Jogador " + player1.getPlayerName() + " venceu o jogo!");
             return;
         }
+
         System.out.println("Estado inicial do tabuleiro:");
         System.out.println(board.getFeedback());
 
