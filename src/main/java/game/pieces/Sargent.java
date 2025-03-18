@@ -8,8 +8,17 @@ public class Sargent extends Piece {
         super(4, player, board);
     }
 
+    public Sargent(Sargent original, Board newBoard) {
+        super(original, newBoard);
+    }
+
     @Override
     public String getRepresentation() {
         return "SG";
+    }
+
+    @Override
+    public Sargent copy(Board board) {
+        return new Sargent(this, board);
     }
 }

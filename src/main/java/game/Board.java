@@ -1,6 +1,8 @@
 package game;
 
+import game.pieces.OpponentPiece;
 import game.pieces.Piece;
+import game.players.Player;
 
 public class Board {
     private Piece[][] board;
@@ -9,6 +11,16 @@ public class Board {
 
     public Board() {
         board = new Piece[ROWS][COLS];
+    }
+
+    public Board(Board original) {
+        board = new Piece[ROWS][COLS];
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                Piece originalPiece = original.getPiece(i, j);
+                this.board[i][j] = (originalPiece != null) ? originalPiece.copy(this) : null;
+            }
+        }
     }
 
     public Piece getPiece(int x, int y) {
@@ -65,4 +77,23 @@ public class Board {
         }
         return sb.toString();
     }
+
+    public final Board getHiddenView(String player) {
+        Board boardCopy = this.deepCopy();
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                Piece piece = boardCopy.getPiece(i, j);
+
+                if (piece != null && !piece.getPlayer().equals(player)) {
+                    boardCopy.setPiece(i, j, new OpponentPiece(this));
+                }
+            }
+        }
+        return boardCopy;
+    }
+
+    private Board deepCopy() {
+        return new Board(this);
+    }
+
 }

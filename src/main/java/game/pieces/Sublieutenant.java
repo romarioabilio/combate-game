@@ -8,8 +8,17 @@ public class Sublieutenant extends Piece {
         super(5, player, board);
     }
 
+    public Sublieutenant(Sublieutenant original, Board newBoard) {
+        super(original, newBoard);
+    }
+
     @Override
     public String getRepresentation() {
         return "ST";
+    }
+
+    @Override
+    public Sublieutenant copy(Board board) {
+        return new Sublieutenant(this, board);
     }
 }
