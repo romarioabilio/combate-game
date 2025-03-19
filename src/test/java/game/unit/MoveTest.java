@@ -1,7 +1,7 @@
-package game;
+package game.unit;
 
-import game.feedbacks.InvalidMoveFeedback;
-import game.feedbacks.MoveFeedback;
+
+import game.Board;
 import game.pieces.LandMine;
 import game.pieces.Prisoner;
 import game.pieces.Sargent;

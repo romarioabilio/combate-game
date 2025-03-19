@@ -1,5 +1,6 @@
-package game;
+package game.unit;
 
+import game.Board;
 import game.feedbacks.LandMineDeactivationFeedback;
 import game.feedbacks.LandmineFeedback;
 import game.pieces.*;
