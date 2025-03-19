@@ -9,7 +9,7 @@ public class MoveFeedback extends Feedback {
     }
 
     private static String formateMessage(Piece piece) {
-        String baseString = "%s de %s foi movida para [%s, %d]";
+        String baseString = "%s de %s foi movido para [%s, %d]";
         String pieceName = piece.getRepresentation();
         String playerName = piece.getPlayer();
         String posX = convertIntToAlfa(piece.getPosX());

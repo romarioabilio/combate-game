@@ -19,7 +19,7 @@ public class Board {
     private final Deque<Piece> lastPiecesPlayedByP1 = new ArrayDeque<>(MAX_CONSECUTIVE_MOVES_SAME_PIECE);
     public Player player2;
     private final Deque<Piece> lastPiecesPlayedByP2 = new ArrayDeque<>(MAX_CONSECUTIVE_MOVES_SAME_PIECE);
-    public int numberMoves;
+    public int numberMoves = 0;
     public static final Integer MAX_CONSECUTIVE_MOVES_SAME_PIECE = 3;
     public static final String PLAYER1_COLOR_OPEN = "\u001B[32m";
     public static final String PLAYER2_COLOR_OPEN = "\u001B[31m";
@@ -169,7 +169,7 @@ public class Board {
     public Feedback isGameFinished() {
         Player p = somePlayerHasMove();
         if (p != null) {
-            return new PlayerWithoutPiecesFeedback();
+            return new PlayerWithoutPiecesFeedback(p);
         }
 
         if (numberMoves >= MAX_NUMBER_OF_MOVES) {
@@ -218,6 +218,8 @@ public class Board {
     }
 
     public Feedback executeAction(PieceAction action) {
+        numberMoves++;
+
         if (action == null || action.getPiece() == null) {
             return new InvalidMoveFeedback();
         }
@@ -227,13 +229,11 @@ public class Board {
             int newPosX = action.getNewPosX();
             int newPosY = action.getNewPosY();
 
-            numberMoves++;
-
             if (addLastPiecesPlayed(piece)) {
                 return piece.move(newPosX, newPosY, this);
             }
 
-            return new InvalidMoveFeedback("Você não pode mover a mesma peça mais de 3 vezes");
+            return new InvalidMoveFeedback(String.format("%s moveu a mesma peça mais de 3 vezes", piece.getPlayer()));
         } catch (Exception e) {
             return new InvalidMoveFeedback(e.getMessage());
         }

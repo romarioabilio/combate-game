@@ -63,8 +63,8 @@ public abstract class Piece {
             return new LandmineFeedback(this, piece);
         }
 
-        if (piece.getClass().getSimpleName().equals("Prisioner")) {
-            return new PrisonerFeedback(this);
+        if (piece.getClass().getSimpleName().equals("Prisoner")) {
+            return new PrisonerFeedback(this, piece);
         }
 
         if (this.strength > piece.getStrength()) {
