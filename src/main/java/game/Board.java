@@ -67,6 +67,11 @@ public class Board {
     }
 
     public boolean isValidSetup(Piece[][] playerSetup) {
+        if (playerSetup.length != 4 || playerSetup[0].length != 10) {
+            System.out.println("Erro: Matriz com peças de tamanho incorreto. Esperado 4x10, encontrado " + playerSetup.length +"x"+playerSetup[0].length);
+            return false;
+        }
+
         Map<String, Integer> actualCounts = new HashMap<>();
 
         for (int i = 0; i < 4; i++) {

@@ -238,11 +238,9 @@ public class PlayTest {
         board.setPiece(0, 1, sg);
         Sargent sg2 = new Sargent("player1", board);
         board.setPiece(0, 2, sg2);
-        System.out.println(board.getFeedback());
+
         PieceAction action = new PieceAction(sg, 0, 2);
         Feedback roundFeedback = board.executeAction(action);
-        System.out.println(roundFeedback.getMessage());
-        System.out.println(board.getFeedback());
 
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(0, 1));
