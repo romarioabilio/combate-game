@@ -226,4 +226,29 @@ public class PlayTest {
         assertEquals("CP de player1 achou o prisioneiro em [A, 3]!", roundFeedback.getMessage());
         assertInstanceOf(PrisonerFeedback.class, roundFeedback);
     }
+
+    @SneakyThrows
+    @Test
+    public void movePieceToPieceOfSamePlayer() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        SimplePlayer player2 = new SimplePlayer("player2");
+        board.player1 = player1;
+        board.player2 = player2;
+
+        Sargent sg = new Sargent("player1", board);
+        board.setPiece(0, 1, sg);
+        Sargent sg2 = new Sargent("player1", board);
+        board.setPiece(0, 2, sg2);
+        System.out.println(board.getFeedback());
+        PieceAction action = new PieceAction(sg, 0, 2);
+        Feedback roundFeedback = board.executeAction(action);
+        System.out.println(roundFeedback.getMessage());
+        System.out.println(board.getFeedback());
+
+        assertEquals("Jogada inválida, passou a vez!", roundFeedback.getMessage());
+        assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
+        assertNotNull(board.getPiece(0, 1));
+        assertNotNull(board.getPiece(0, 2));
+    }
 }

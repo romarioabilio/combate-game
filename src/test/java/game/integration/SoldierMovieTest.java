@@ -1,6 +1,7 @@
 package game.integration;
 
 import game.Board;
+import game.feedbacks.DeffeatFeedback;
 import game.feedbacks.Feedback;
 import game.feedbacks.InvalidMoveFeedback;
 import game.feedbacks.MoveFeedback;
@@ -15,6 +16,65 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class SoldierMovieTest {
+
+    @SneakyThrows
+    @Test
+    public void soldierMoveOneHouseValid() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        SimplePlayer player2 = new SimplePlayer("player2");
+        board.player1 = player1;
+        board.player2 = player2;
+
+        Soldier s = new Soldier("player1", board);
+        board.setPiece(0, 1, s);
+        Major mj = new Major("player2", board);
+        board.setPiece(2, 1, mj);
+        Major mj1 = new Major("player2", board);
+        board.setPiece(2, 2, mj1);
+        Major mj2 = new Major("player2", board);
+        board.setPiece(2, 0, mj2);
+        Major mj3 = new Major("player2", board);
+        board.setPiece(3, 1, mj3);
+
+        PieceAction action = new PieceAction(s, 1, 1);
+        Feedback roundFeedback = board.executeAction(action);
+        assertEquals("S de player1 foi movido para [B, 2]", roundFeedback.getMessage());
+        assertInstanceOf(MoveFeedback.class, roundFeedback);
+        assertNotNull(board.getPiece(1, 1));
+        assertEquals(board.getPiece(1, 1).getPlayer(), player1.getPlayerName());
+        assertNull(board.getPiece(0, 1));
+    }
+
+
+    @SneakyThrows
+    @Test
+    public void soldierMoveOneHouseToAnEnemy() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        SimplePlayer player2 = new SimplePlayer("player2");
+        board.player1 = player1;
+        board.player2 = player2;
+
+        Soldier s = new Soldier("player1", board);
+        board.setPiece(1, 1, s);
+        Major mj = new Major("player2", board);
+        board.setPiece(2, 1, mj);
+        Major mj1 = new Major("player2", board);
+        board.setPiece(2, 2, mj1);
+        Major mj2 = new Major("player2", board);
+        board.setPiece(2, 0, mj2);
+        Major mj3 = new Major("player2", board);
+        board.setPiece(3, 1, mj3);
+
+        PieceAction action = new PieceAction(s, 2, 1);
+        Feedback roundFeedback = board.executeAction(action);
+        assertEquals("S de player1 foi eliminado por MJ de player2 em [C, 2]", roundFeedback.getMessage());
+        assertInstanceOf(DeffeatFeedback.class, roundFeedback);
+        assertNotNull(board.getPiece(2, 1));
+        assertEquals(board.getPiece(2, 1).getPlayer(), player2.getPlayerName());
+        assertNull(board.getPiece(1, 1));
+    }
 
     @SneakyThrows
     @Test
