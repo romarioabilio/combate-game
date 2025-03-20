@@ -45,6 +45,10 @@ public abstract class Piece {
 
             Piece opponent = board.getPiece(newX, newY);
             if (opponent != null) {
+                if (opponent.player.equals(this.player)) {
+                    board.setPiece(posX, posY, this);
+                    return new InvalidMoveFeedback();
+                }
                 return this.fight(opponent);
             }
 
