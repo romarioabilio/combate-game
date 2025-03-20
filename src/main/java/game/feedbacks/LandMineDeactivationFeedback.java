@@ -6,6 +6,7 @@ public class LandMineDeactivationFeedback extends Feedback {
 
     public LandMineDeactivationFeedback(Piece piece) {
         super(formatMessage(piece));
+        this.piece = piece.copyWithoutBoard();
     }
 
     private static String formatMessage(Piece piece) {

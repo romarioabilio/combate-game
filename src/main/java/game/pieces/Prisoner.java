@@ -40,4 +40,9 @@ public class Prisoner extends Piece {
     public Prisoner copy(Board board) {
         return new Prisoner(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new Prisoner(this, null);
+    }
 }

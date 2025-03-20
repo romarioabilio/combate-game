@@ -2,8 +2,10 @@ package game.pieces;
 
 import game.Board;
 import game.feedbacks.*;
+import java.util.UUID;
 
 public abstract class Piece {
+    private final UUID id;
     protected int strength;
     protected int posX;
     protected int posY;
@@ -11,22 +13,37 @@ public abstract class Piece {
     protected Board board;
 
     public Piece(int strength, String player, Board board) {
+        this.id = UUID.randomUUID();
         this.strength = strength;
         this.player = player;
         this.board = board;
     }
 
     public Piece(int strength, Board board) {
+        this.id = UUID.randomUUID();
         this.strength = strength;
         this.board = board;
     }
 
     public Piece(Piece piece, Board board) {
+        this.id = piece.id;
         this.board = board;
         this.strength = piece.getStrength();
         this.player = piece.getPlayer();
         this.posX = piece.getPosX();
         this.posY = piece.getPosY();
+    }
+
+    public Piece(Piece piece) {
+        this.id = piece.id;
+        this.strength = piece.getStrength();
+        this.player = piece.getPlayer();
+        this.posX = piece.getPosX();
+        this.posY = piece.getPosY();
+    }
+
+    public boolean equals(Piece piece) {
+        return this.id.equals(piece.id);
     }
 
     /**
@@ -45,6 +62,10 @@ public abstract class Piece {
 
             Piece opponent = board.getPiece(newX, newY);
             if (opponent != null) {
+                if (opponent.player.equals(this.player)) {
+                    board.setPiece(posX, posY, this);
+                    return new InvalidMoveFeedback(posX, posY, newX, newY);
+                }
                 return this.fight(opponent);
             }
 
@@ -54,7 +75,7 @@ public abstract class Piece {
             return new MoveFeedback(this);
         }
 
-        return new InvalidMoveFeedback();
+        return new InvalidMoveFeedback(posX, posY, newX, newY);
     }
 
     public Feedback fight(Piece piece) {
@@ -63,8 +84,8 @@ public abstract class Piece {
             return new LandmineFeedback(this, piece);
         }
 
-        if (piece.getClass().getSimpleName().equals("Prisioner")) {
-            return new PrisonerFeedback(this);
+        if (piece.getClass().getSimpleName().equals("Prisoner")) {
+            return new PrisonerFeedback(this, piece);
         }
 
         if (this.strength > piece.getStrength()) {
@@ -83,7 +104,7 @@ public abstract class Piece {
 
         // Se o atacante perde:
         board.setPiece(piece.posX, piece.posY, piece);
-        return new DeffeatFeedback(this, piece, piece.getPosX(), piece.getPosY());
+        return new DefeatFeedback(this, piece, piece.getPosX(), piece.getPosY());
     };
 
 
@@ -117,4 +138,6 @@ public abstract class Piece {
     }
 
     public abstract Piece copy(Board newBoard);
+
+    public abstract Piece copyWithoutBoard();
 }

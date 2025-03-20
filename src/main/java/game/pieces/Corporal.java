@@ -37,4 +37,9 @@ public class Corporal extends Piece {
     public Corporal copy(Board board) {
         return new Corporal(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new Corporal(this, null);
+    }
 }

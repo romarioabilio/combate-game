@@ -1,12 +1,19 @@
 package game.feedbacks;
 
+import game.pieces.Piece;
+import lombok.Getter;
+
+@Getter
 public abstract class Feedback {
-    private String message;
+    protected Piece piece;
+    protected String message;
 
-    public Feedback(String message) { this.message = message; }
+    public Feedback(String message) {
+        this.message = message;
+    }
 
-    public String getMessage() {
-        return message;
+    public Feedback(Piece piece) {
+        this.piece = piece;
     }
 
     static String convertIntToAlfa(int value) {

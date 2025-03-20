@@ -1,7 +1,8 @@
-package game;
+package game.unit;
 
+import game.Board;
 import game.feedbacks.AttackFeedback;
-import game.feedbacks.DeffeatFeedback;
+import game.feedbacks.DefeatFeedback;
 import game.feedbacks.EqualStrengthFeedback;
 import game.pieces.Captain;
 import game.pieces.Colonel;
@@ -39,7 +40,7 @@ public class FightTest {
         var f = cr.move(0, 2, board);
 
         assertTrue(f instanceof AttackFeedback);
-        assertEquals("CR de player1 eliminou S de player2 e se moveu de [0, 1] para [0, 2]", f.getMessage());
+        assertEquals("CR de player1 eliminou S de player2 e se moveu de [A, 2] para [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -52,8 +53,8 @@ public class FightTest {
         board.setPiece(0, 2, cr);
         var f = s.move(0, 2, board);
 
-        assertTrue(f instanceof DeffeatFeedback);
-        assertEquals("S de player1 foi eliminado por CR de player2 em [0, 2]", f.getMessage());
+        assertTrue(f instanceof DefeatFeedback);
+        assertEquals("S de player1 foi eliminado por CR de player2 em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -67,7 +68,7 @@ public class FightTest {
         var f = sa.move(0, 2, board);
 
         assertTrue(f instanceof AttackFeedback);
-        assertEquals("AS de player1 eliminou CR de player2 e se moveu de [0, 1] para [0, 2]", f.getMessage());
+        assertEquals("AS de player1 eliminou CR de player2 e se moveu de [A, 2] para [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -81,6 +82,6 @@ public class FightTest {
         var f = l.move(0, 2, board);
 
         assertTrue(f instanceof AttackFeedback);
-        assertEquals("CR de player1 eliminou AS de player2 e se moveu de [0, 1] para [0, 2]", f.getMessage());
+        assertEquals("CR de player1 eliminou AS de player2 e se moveu de [A, 2] para [A, 3]", f.getMessage());
     }
 }

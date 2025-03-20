@@ -1,7 +1,9 @@
-package game;
+package game.unit;
 
+
+import game.Board;
+import game.feedbacks.Feedback;
 import game.feedbacks.InvalidMoveFeedback;
-import game.feedbacks.MoveFeedback;
 import game.pieces.LandMine;
 import game.pieces.Prisoner;
 import game.pieces.Sargent;
@@ -45,6 +47,19 @@ public class MoveTest {
         LandMine l = new LandMine("player2", board);
         board.setPiece(0, 2, l);
 
-        assertDoesNotThrow(() -> sg.move(0, 1, board));
+        assertDoesNotThrow(() -> sg.move(0, 0, board));
+    }
+
+    @SneakyThrows
+    @Test
+    public void moveToPieceOfSamePlayer() {
+        Board board = new Board();
+        Sargent sg = new Sargent("player1", board);
+        board.setPiece(0, 1, sg);
+        LandMine l = new LandMine("player1", board);
+        board.setPiece(0, 2, l);
+
+        Feedback feedback = sg.move(0, 2, board);
+        assertInstanceOf(InvalidMoveFeedback.class, feedback);
     }
 }

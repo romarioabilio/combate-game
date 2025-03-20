@@ -21,4 +21,9 @@ public class Major extends Piece {
     public Major copy(Board board) {
         return new Major(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new Major(this, null);
+    }
 }

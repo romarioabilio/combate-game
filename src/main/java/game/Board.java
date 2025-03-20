@@ -4,7 +4,10 @@ import game.feedbacks.*;
 import game.pieces.OpponentPiece;
 import game.pieces.Piece;
 import game.pieces.PieceAction;
+import game.pieces.QuantityPerPiece;
 import game.players.Player;
+
+import java.util.*;
 
 public class Board {
     private static final int MAX_NUMBER_OF_MOVES = 5000;
@@ -12,9 +15,12 @@ public class Board {
     private Piece[][] board;
     public static final int ROWS = 10;
     public static final int COLS = 10;
-    public game.players.Player player1;
+    public Player player1;
+    private final Deque<Piece> lastPiecesPlayedByP1 = new ArrayDeque<>(MAX_CONSECUTIVE_MOVES_SAME_PIECE);
     public Player player2;
-    public int numberMoves;
+    private final Deque<Piece> lastPiecesPlayedByP2 = new ArrayDeque<>(MAX_CONSECUTIVE_MOVES_SAME_PIECE);
+    public int numberMoves = 0;
+    public static final Integer MAX_CONSECUTIVE_MOVES_SAME_PIECE = 3;
     public static final String PLAYER1_COLOR_OPEN = "\u001B[32m";
     public static final String PLAYER2_COLOR_OPEN = "\u001B[31m";
     public static final String LAKE_COLOR_OPEN = "\u001B[34m";
@@ -60,16 +66,54 @@ public class Board {
                 (((x == 4 && y == 6) || (x == 5 && y == 6)) || ((x == 4 && y == 7) || (x == 5 && y == 7))));
     }
 
+    public boolean isValidSetup(Piece[][] playerSetup) {
+        if (playerSetup.length != 4 || playerSetup[0].length != 10) {
+            System.out.println("Erro: Matriz com peças de tamanho incorreto. Esperado 4x10, encontrado " + playerSetup.length +"x"+playerSetup[0].length);
+            return false;
+        }
+
+        Map<String, Integer> actualCounts = new HashMap<>();
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                Piece piece = playerSetup[i][j];
+                if (piece != null) {
+                    String code = piece.getRepresentation();
+                    actualCounts.put(code, actualCounts.getOrDefault(code, 0) + 1);
+                }
+            }
+        }
+
+        for (QuantityPerPiece qpp : QuantityPerPiece.values()) {
+            String code = qpp.getCode();
+            int expected = qpp.getQuantity();
+            int actual = actualCounts.getOrDefault(code, 0);
+
+            if (actual != expected) {
+                System.out.println("Erro: Esperado " + expected + " peças de " + code + ", mas encontrado " + actual);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /**
     * Adiciona posicionamento inicial do jogador ao tabuleiro
     */
-    public void setPlayerInitialMove(Piece[][] playerInitialMove, int player) {
+    public boolean addPlayerSetup(Piece[][] playerSetup, int player) {
+        if (!isValidSetup(playerSetup)) {
+            return false;
+        }
+
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
                 int col = player == 1 ? i : i + 6;
-                this.setPiece(col, j, playerInitialMove[i][j]);
+                this.setPiece(col, j, playerSetup[i][j]);
             }
         }
+
+        return true;
     }
 
     /**
@@ -130,7 +174,7 @@ public class Board {
     public Feedback isGameFinished() {
         Player p = somePlayerHasMove();
         if (p != null) {
-            return new PlayerWithoutPiecesFeedback();
+            return new PlayerWithoutPiecesFeedback(p);
         }
 
         if (numberMoves >= MAX_NUMBER_OF_MOVES) {
@@ -179,31 +223,42 @@ public class Board {
     }
 
     public Feedback executeAction(PieceAction action) {
-        if (action != null) {
+        numberMoves++;
+
+        if (action == null || action.getPiece() == null) {
+            return new InvalidMoveFeedback();
+        }
+
+        try {
             Piece piece = action.getPiece();
             int newPosX = action.getNewPosX();
             int newPosY = action.getNewPosY();
 
-            if (piece == null || !isValidPosition(newPosX, newPosY)) {
-                return new InvalidMoveFeedback();
+            if (addLastPiecesPlayed(piece)) {
+                return piece.move(newPosX, newPosY, this);
             }
 
-            Piece targetPiece = getPiece(newPosX, newPosY);
-
-            if (targetPiece != null) {
-                Feedback fightFeedback = piece.fight(targetPiece);
-                if (fightFeedback != null) {
-                    return fightFeedback;
-                }
-            }
-
-            setPiece(piece.getPosX(), piece.getPosY(), null);
-            setPiece(newPosX, newPosY, piece);
-
-            numberMoves++;
-
-            return new MoveFeedback(piece);
+            return new InvalidMoveFeedback(String.format("%s moveu a mesma peça mais de 3 vezes", piece.getPlayer()));
+        } catch (Exception e) {
+            return new InvalidMoveFeedback(e.getMessage());
         }
-        return new InvalidMoveFeedback();
+    }
+
+    public boolean addLastPiecesPlayed(Piece piece) {
+        var lastPiecesPlayed = player1.getPlayerName().equals(piece.getPlayer()) ? lastPiecesPlayedByP1 : lastPiecesPlayedByP2;
+
+        var result = true;
+        if (lastPiecesPlayed.size() == MAX_CONSECUTIVE_MOVES_SAME_PIECE) {
+            if (lastPiecesPlayed.stream().allMatch(p -> p.equals(piece))) {
+                result = false;
+            }
+        }
+
+        if (lastPiecesPlayed.size() == MAX_CONSECUTIVE_MOVES_SAME_PIECE) {
+            lastPiecesPlayed.removeLast();
+        }
+        lastPiecesPlayed.push(piece);
+
+        return result;
     }
 }

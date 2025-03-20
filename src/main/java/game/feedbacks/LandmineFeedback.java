@@ -3,9 +3,16 @@ package game.feedbacks;
 import game.pieces.Piece;
 
 public class LandmineFeedback extends Feedback {
+    private Piece victim;
 
     public LandmineFeedback(Piece victim, Piece landMine) {
         super(formateMessage(victim, landMine));
+        this.piece = landMine.copyWithoutBoard();
+        this.victim = victim.copyWithoutBoard();
+    }
+
+    public Piece getVictim() {
+        return victim;
     }
 
     private static String formateMessage(Piece victim, Piece landMine) {

@@ -1,6 +1,7 @@
 package game.players;
 
 import game.Board;
+import game.feedbacks.Feedback;
 import game.pieces.Piece;
 import game.pieces.PieceAction;
 
@@ -11,10 +12,10 @@ public interface Player {
      * Realiza a jogada inicial, posicionar as 40 peças nas 4 primeiras fileiras.
      * @param board o tabuleiro do jogo.
      */
-    Piece[][] initialMove(Board board);
+    Piece[][] setup(Board board);
 
     /**
      * Prepara uma jogada e retorna um objeto da jogada para ser executado pelo Board.
      */
-    PieceAction play(Board board);
+    PieceAction play(Board board, Feedback myLastFeedback, Feedback enemyLastFeedback);
 }

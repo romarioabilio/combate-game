@@ -5,11 +5,12 @@ import game.pieces.Piece;
 public class MoveFeedback extends Feedback {
 
     public MoveFeedback(Piece piece) {
-        super(formateMessage(piece));
+        super(piece);
     }
 
-    private static String formateMessage(Piece piece) {
-        String baseString = "%s de %s foi movida para [%s, %d]";
+    @Override
+    public String getMessage() {
+        String baseString = "%s de %s foi movido para [%s, %d]";
         String pieceName = piece.getRepresentation();
         String playerName = piece.getPlayer();
         String posX = convertIntToAlfa(piece.getPosX());

@@ -21,4 +21,9 @@ public class Colonel extends Piece {
     public Colonel copy(Board board) {
         return new Colonel(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new Colonel(this, null);
+    }
 }

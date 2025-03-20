@@ -1,6 +1,7 @@
 package game.players;
 
 import game.Board;
+import game.feedbacks.Feedback;
 import game.pieces.PieceAction;
 import game.pieces.PieceFactory;
 import game.pieces.QuantityPerPiece;
@@ -32,7 +33,7 @@ public class SimplePlayer implements Player {
     /**
      * Posicina as peças no tabuleiro
      */
-    public Piece[][] initialMove(Board board) {
+    public Piece[][] setup(Board board) {
         /**
          * Jogador que posiciona suas peças de forma aleatória
          */
@@ -66,10 +67,7 @@ public class SimplePlayer implements Player {
      * @return Uma ação (PieceAction) com a peça escolhida e a posição destino.
      */
     @Override
-    public PieceAction play(Board board) {
-        System.out.println(board.getFeedback());
-        System.out.println("asd");
-
+    public PieceAction play(Board board, Feedback myLastFeedback, Feedback enemyLastFeedback) {
         String playerName = getPlayerName();
         // Define a direção de "frente": para Player1 (+1 em X) e para Player2 (-1 em X)
         int forwardDir = playerName.equals("Player1") ? 1 : -1;
@@ -83,7 +81,7 @@ public class SimplePlayer implements Player {
                     // Tenta mover para frente
                     int newX = piece.getPosX() + forwardDir;
                     int newY = piece.getPosY();
-                    if (Board.isValidPosition(newX, newY) && board.getPiece(newX, newY) == null) {
+                    if (Board.isValidPosition(newX, newY)) {
                         return new PieceAction(piece, newX, newY);
                     }
 
@@ -95,7 +93,7 @@ public class SimplePlayer implements Player {
                     for (int[] dir : lateralDirs) {
                         newX = piece.getPosX();
                         newY = piece.getPosY() + dir[1];
-                        if (Board.isValidPosition(newX, newY) && board.getPiece(newX, newY) == null) {
+                        if (Board.isValidPosition(newX, newY)) {
                             // Conta aliados próximos à célula destino
                             int allyCount = countAlliedNeighbors(newX, newY, board, playerName);
                             if (allyCount < bestAllyCount) {

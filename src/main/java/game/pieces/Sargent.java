@@ -21,4 +21,9 @@ public class Sargent extends Piece {
     public Sargent copy(Board board) {
         return new Sargent(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new Sargent(this, null);
+    }
 }

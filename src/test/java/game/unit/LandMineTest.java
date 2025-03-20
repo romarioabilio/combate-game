@@ -1,5 +1,6 @@
-package game;
+package game.unit;
 
+import game.Board;
 import game.feedbacks.LandMineDeactivationFeedback;
 import game.feedbacks.LandmineFeedback;
 import game.pieces.*;
@@ -21,7 +22,7 @@ public class LandMineTest {
         var f = c.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("CP de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("CP de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -35,7 +36,7 @@ public class LandMineTest {
         var f = col.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("CR de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("CR de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -49,7 +50,7 @@ public class LandMineTest {
         var f = corp.move(0, 2, board);
 
         assertTrue(f instanceof LandMineDeactivationFeedback);
-        assertEquals("C de player1 desativou uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("C de player1 desativou uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -63,7 +64,7 @@ public class LandMineTest {
         var f = g.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("G de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("G de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -77,7 +78,7 @@ public class LandMineTest {
         var f = lt.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("T de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("T de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -91,7 +92,7 @@ public class LandMineTest {
         var f = mj.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("MJ de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("MJ de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -105,7 +106,7 @@ public class LandMineTest {
         var f = sg.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("SG de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("SG de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -119,7 +120,7 @@ public class LandMineTest {
         var f = sa.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("AS de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("AS de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -133,7 +134,7 @@ public class LandMineTest {
         var f = s.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("S de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("S de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
     @SneakyThrows
@@ -147,7 +148,7 @@ public class LandMineTest {
         var f = sg.move(0, 2, board);
 
         assertTrue(f instanceof LandmineFeedback);
-        assertEquals("ST de player1 foi eliminado por uma mina terrestre em [0, 2]", f.getMessage());
+        assertEquals("ST de player1 foi eliminado por uma mina terrestre em [A, 3]", f.getMessage());
     }
 
 }
