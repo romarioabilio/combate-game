@@ -108,8 +108,9 @@ public class Board {
 
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 10; j++) {
-                int col = player == 1 ? i : i + 6;
-                this.setPiece(col, j, playerSetup[i][j]);
+                int row = (player == 1) ? (3 - i) : (i + 6);
+                int col = (player == 1) ? (9 - j) : j;
+                this.setPiece(row, col, playerSetup[i][j]);
             }
         }
 
