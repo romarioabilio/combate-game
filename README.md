@@ -27,7 +27,7 @@ Para adicionar um agente, siga as orientações abaixo:
 - **Interface:** A classe deve implementar a interface `Player`.
 - **Exemplo:** Consulte a implementação de exemplo na classe `SimplePlayer`.
 - **Heurísticas de Jogada:** Implemente a lógica de jogada no método `play` da sua classe.
-- **Heurísticas de Posicionamento:** Implemente a lógica de posicionamento das peças no método `initialMove` da sua classe.
+- **Heurísticas de Posicionamento:** Implemente a lógica de posicionamento das peças no método `setup` da sua classe.
 - **Atenção:** O restante do código deve permanecer inalterado para garantir o funcionamento correto do jogo.
 
 ---
