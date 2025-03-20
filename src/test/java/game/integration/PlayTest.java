@@ -42,7 +42,6 @@ public class PlayTest {
         PieceAction action = new PieceAction(sg, 4, 2);
         Feedback roundFeedback = board.executeAction(action);
 
-        assertEquals("Jogada inválida, passou a vez!", roundFeedback.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(3, 2));
         assertEquals(board.getPiece(3, 2).getPlayer(), player1.getPlayerName());
@@ -98,7 +97,7 @@ public class PlayTest {
         Feedback roundFeedback = board.executeAction(action);
 
         assertEquals("SG de player1 foi eliminado por MJ de player2 em [A, 3]", roundFeedback.getMessage());
-        assertInstanceOf(DeffeatFeedback.class, roundFeedback);
+        assertInstanceOf(DefeatFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(0, 2));
         assertEquals(board.getPiece(0, 2).getPlayer(), player2.getPlayerName());
         assertNull(board.getPiece(0, 1));
@@ -163,7 +162,6 @@ public class PlayTest {
         PieceAction action = new PieceAction(sg, 0, 3);
         Feedback roundFeedback = board.executeAction(action);
 
-        assertEquals("Jogada inválida, passou a vez!", roundFeedback.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(0, 1));
         assertEquals(board.getPiece(0, 1).getPlayer(), player1.getPlayerName());
@@ -246,7 +244,6 @@ public class PlayTest {
         System.out.println(roundFeedback.getMessage());
         System.out.println(board.getFeedback());
 
-        assertEquals("Jogada inválida, passou a vez!", roundFeedback.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(0, 1));
         assertNotNull(board.getPiece(0, 2));

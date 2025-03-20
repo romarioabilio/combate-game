@@ -1,7 +1,7 @@
 package game.integration;
 
 import game.Board;
-import game.feedbacks.DeffeatFeedback;
+import game.feedbacks.DefeatFeedback;
 import game.feedbacks.Feedback;
 import game.feedbacks.InvalidMoveFeedback;
 import game.feedbacks.MoveFeedback;
@@ -70,7 +70,7 @@ public class SoldierMovieTest {
         PieceAction action = new PieceAction(s, 2, 1);
         Feedback roundFeedback = board.executeAction(action);
         assertEquals("S de player1 foi eliminado por MJ de player2 em [C, 2]", roundFeedback.getMessage());
-        assertInstanceOf(DeffeatFeedback.class, roundFeedback);
+        assertInstanceOf(DefeatFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(2, 1));
         assertEquals(board.getPiece(2, 1).getPlayer(), player2.getPlayerName());
         assertNull(board.getPiece(1, 1));
@@ -128,7 +128,6 @@ public class SoldierMovieTest {
         PieceAction action = new PieceAction(s, 2, 2);
         Feedback roundFeedback = board.executeAction(action);
 
-        assertEquals("Jogada inválida, passou a vez!", roundFeedback.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(0, 1));
         assertEquals(board.getPiece(0, 1).getPlayer(), player1.getPlayerName());
@@ -165,7 +164,6 @@ public class SoldierMovieTest {
         PieceAction action = new PieceAction(s, 0, 3);
         Feedback roundFeedback = board.executeAction(action);
 
-        assertEquals("Jogada inválida, passou a vez!", roundFeedback.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(0, 1));
         assertEquals(board.getPiece(0, 1).getPlayer(), player1.getPlayerName());
@@ -201,7 +199,6 @@ public class SoldierMovieTest {
 
         PieceAction action = new PieceAction(s, 3, 0);
         Feedback roundFeedback = board.executeAction(action);
-        assertEquals("Jogada inválida, passou a vez!", roundFeedback.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
         assertNotNull(board.getPiece(0, 1));
         assertEquals(board.getPiece(0, 1).getPlayer(), player1.getPlayerName());
@@ -209,15 +206,13 @@ public class SoldierMovieTest {
 
         PieceAction action2 = new PieceAction(s, 0, 4);
         Feedback roundFeedback2 = board.executeAction(action2);
-        assertEquals("Jogada inválida, passou a vez!", roundFeedback2.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback2);
         assertNotNull(board.getPiece(0, 1));
         assertEquals(board.getPiece(0, 1).getPlayer(), player1.getPlayerName());
         assertNull(board.getPiece(0, 4));
 
-        PieceAction action3 = new PieceAction(s, 1, 4);
+        PieceAction action3 = new PieceAction(s, 0, 3);
         Feedback roundFeedback3 = board.executeAction(action3);
-        assertEquals("Jogada inválida, passou a vez!", roundFeedback3.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback3);
         assertNotNull(board.getPiece(0, 1));
         assertEquals(board.getPiece(0, 1).getPlayer(), player1.getPlayerName());

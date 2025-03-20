@@ -2,7 +2,7 @@ package game.unit;
 
 import game.Board;
 import game.feedbacks.AttackFeedback;
-import game.feedbacks.DeffeatFeedback;
+import game.feedbacks.DefeatFeedback;
 import game.feedbacks.EqualStrengthFeedback;
 import game.pieces.Captain;
 import game.pieces.Colonel;
@@ -53,7 +53,7 @@ public class FightTest {
         board.setPiece(0, 2, cr);
         var f = s.move(0, 2, board);
 
-        assertTrue(f instanceof DeffeatFeedback);
+        assertTrue(f instanceof DefeatFeedback);
         assertEquals("S de player1 foi eliminado por CR de player2 em [A, 3]", f.getMessage());
     }
 
