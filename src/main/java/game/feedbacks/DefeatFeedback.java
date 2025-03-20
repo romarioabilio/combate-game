@@ -2,10 +2,18 @@ package game.feedbacks;
 
 import game.pieces.Piece;
 
-public class DeffeatFeedback extends Feedback {
+public class DefeatFeedback extends Feedback {
+    public Piece attacker;
+    public Piece defender;
+    public int toX;
+    public int toY;
 
-    public DeffeatFeedback(Piece attacker, Piece defender, int toX, int toY) {
+    public DefeatFeedback(Piece attacker, Piece defender, int toX, int toY) {
         super(formateMessage(attacker, defender, toX, toY));
+        this.attacker = attacker.copyWithoutBoard();
+        this.defender = defender.copyWithoutBoard();
+        this.toX = toX;
+        this.toY = toY;
     }
 
     private static String formateMessage(Piece attacker, Piece defender, int toX, int toY) {

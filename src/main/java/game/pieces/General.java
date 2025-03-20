@@ -21,4 +21,9 @@ public class General extends Piece {
     public General copy(Board board) {
         return new General(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new General(this, null);
+    }
 }

@@ -1,6 +1,7 @@
 package game.players;
 
 import game.Board;
+import game.feedbacks.Feedback;
 import game.pieces.PieceAction;
 import game.pieces.PieceFactory;
 import game.pieces.QuantityPerPiece;
@@ -66,8 +67,7 @@ public class SimplePlayer implements Player {
      * @return Uma ação (PieceAction) com a peça escolhida e a posição destino.
      */
     @Override
-    public PieceAction play(Board board) {
-        System.out.println(board.getFeedback());
+    public PieceAction play(Board board, Feedback myLastFeedback, Feedback enemyLastFeedback) {
         String playerName = getPlayerName();
         // Define a direção de "frente": para Player1 (+1 em X) e para Player2 (-1 em X)
         int forwardDir = playerName.equals("Player1") ? 1 : -1;

@@ -1,6 +1,7 @@
 package game.players;
 
 import game.Board;
+import game.feedbacks.Feedback;
 import game.pieces.Piece;
 import game.pieces.PieceAction;
 
@@ -16,5 +17,5 @@ public interface Player {
     /**
      * Prepara uma jogada e retorna um objeto da jogada para ser executado pelo Board.
      */
-    PieceAction play(Board board);
+    PieceAction play(Board board, Feedback myLastFeedback, Feedback enemyLastFeedback);
 }

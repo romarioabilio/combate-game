@@ -1,5 +1,6 @@
 package game;
 
+import game.feedbacks.ConvertFeedbackToEnemy;
 import game.feedbacks.Feedback;
 import game.feedbacks.PrisonerFeedback;
 import game.pieces.Piece;
@@ -62,18 +63,30 @@ public class Game {
         while (true) {
             System.out.println("Rodada " + this.getRound() + ":");
 
+            Feedback roundFeedback = null;
+            Feedback lastPlayer1Feedback = null;
+            Feedback lastPlayer2Feedback = null;
             for (int i = 0; i < 2; i++) {
-                Feedback roundFeedback = null;
                 if (actualPlayer) {
                     // Jogada do Player1
-                    PieceAction action = player1.play(board.getHiddenView(player1.getPlayerName()));
+                    PieceAction action = player1.play(
+                            board.getHiddenView(player1.getPlayerName()),
+                            lastPlayer1Feedback,
+                            ConvertFeedbackToEnemy.convert(lastPlayer2Feedback)
+                    );
                     roundFeedback = board.executeAction(action);
+                    lastPlayer1Feedback  = roundFeedback;
                     System.out.println("Player1: " + roundFeedback.getMessage());
                     System.out.println(board.getFeedback());
                 } else {
                     // Jogada do Player2
-                    PieceAction action = player2.play(board.getHiddenView(player2.getPlayerName()));
+                    PieceAction action = player2.play(
+                            board.getHiddenView(player2.getPlayerName()),
+                            lastPlayer2Feedback,
+                            ConvertFeedbackToEnemy.convert(lastPlayer1Feedback)
+                    );
                     roundFeedback = board.executeAction(action);
+                    lastPlayer2Feedback  = roundFeedback;
                     System.out.println("Player2: " + roundFeedback.getMessage());
                     System.out.println(board.getFeedback());
                 }

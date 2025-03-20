@@ -42,4 +42,9 @@ public class SecretAgent extends Piece {
     public SecretAgent copy(Board board) {
         return new SecretAgent(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new SecretAgent(this, null);
+    }
 }

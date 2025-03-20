@@ -52,4 +52,9 @@ public class Soldier extends Piece {
     public Soldier copy(Board board) {
         return new Soldier(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new Soldier(this, null);
+    }
 }

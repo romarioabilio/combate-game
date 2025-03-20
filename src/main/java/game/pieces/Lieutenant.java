@@ -21,4 +21,9 @@ public class Lieutenant extends Piece {
     public Lieutenant copy(Board board) {
         return new Lieutenant(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new Lieutenant(this, null);
+    }
 }

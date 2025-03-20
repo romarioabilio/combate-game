@@ -3,9 +3,13 @@ package game.feedbacks;
 import game.pieces.Piece;
 
 public class EqualStrengthFeedback extends Feedback {
+    public Piece attacker;
+    public Piece defender;
 
-    public EqualStrengthFeedback(Piece piece1, Piece piece2) {
-        super(formateMessage(piece1, piece2));
+    public EqualStrengthFeedback(Piece attacker, Piece defender) {
+        super(formateMessage(attacker, defender));
+        this.attacker = attacker.copyWithoutBoard();
+        this.defender = defender.copyWithoutBoard();
     }
 
     private static String formateMessage(Piece piece1, Piece piece2) {

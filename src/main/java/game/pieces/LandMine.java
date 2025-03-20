@@ -40,4 +40,9 @@ public class LandMine extends Piece {
     public LandMine copy(Board board) {
         return new LandMine(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new LandMine(this, null);
+    }
 }

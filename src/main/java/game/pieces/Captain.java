@@ -21,4 +21,9 @@ public class Captain extends Piece {
     public Captain copy(Board board) {
         return new Captain(this, board);
     }
+
+    @Override
+    public Piece copyWithoutBoard() {
+        return new Captain(this, null);
+    }
 }
