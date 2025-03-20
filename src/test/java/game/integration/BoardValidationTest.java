@@ -7,8 +7,10 @@ import game.players.SimplePlayer;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardValidationTest {
 
@@ -115,5 +117,163 @@ public class BoardValidationTest {
 
         assertEquals("Jogada inválida: player1 moveu a mesma peça mais de 3 vezes\nPassou a vez!", roundFeedback.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
+    }
+
+    @SneakyThrows
+    @Test
+    public void validateValidSetupBoard() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        board.player1 = player1;
+
+        var result = new Piece[4][10];
+        List<String> piecesRepresentations = new ArrayList<>();
+        for (QuantityPerPiece piece : QuantityPerPiece.values()) {
+            int quantity = piece.getQuantity();
+            for (int i = 0; i < quantity; i++) {
+                piecesRepresentations.add(piece.getCode());
+            }
+        }
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                String pieceRepresentation = piecesRepresentations.get(index);
+                result[i][j] = PieceFactory.createPiece(pieceRepresentation, player1.getPlayerName(), board);
+                index++;
+            }
+        }
+
+        var player1SetupIsValid = board.addPlayerSetup(result, 1);
+        assertTrue(player1SetupIsValid);
+    }
+
+    @SneakyThrows
+    @Test
+    public void validateFewerPiecesOnTheBoard() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        board.player1 = player1;
+
+        var result = new Piece[4][10];
+        List<String> piecesRepresentations = new ArrayList<>();
+        for (QuantityPerPiece piece : QuantityPerPiece.values()) {
+            int quantity = piece.getQuantity();
+            for (int i = 0; i < quantity-1; i++) {
+                piecesRepresentations.add(piece.getCode());
+            }
+        }
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                try {
+                    String pieceRepresentation = piecesRepresentations.get(index);
+                    result[i][j] = PieceFactory.createPiece(pieceRepresentation, player1.getPlayerName(), board);
+                    index++;
+                } catch (Exception ignored) {};
+            }
+        }
+
+        var player1SetupIsValid = board.addPlayerSetup(result, 1);
+        assertFalse(player1SetupIsValid);
+    }
+
+    @SneakyThrows
+    @Test
+    public void validateMorePiecesOnTheBoard() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        board.player1 = player1;
+
+        var result = new Piece[4][10];
+        List<String> piecesRepresentations = new ArrayList<>();
+        for (QuantityPerPiece piece : QuantityPerPiece.values()) {
+            int quantity = piece.getQuantity();
+            for (int i = 0; i < quantity+1; i++) {
+                piecesRepresentations.add(piece.getCode());
+            }
+        }
+        int index = 0;
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 10; j++) {
+                try {
+                    String pieceRepresentation = piecesRepresentations.get(index);
+                    result[i][j] = PieceFactory.createPiece(pieceRepresentation, player1.getPlayerName(), board);
+                    index++;
+                } catch (Exception ignored) {};
+            }
+        }
+
+        var player1SetupIsValid = board.addPlayerSetup(result, 1);
+        assertFalse(player1SetupIsValid);
+    }
+
+    @SneakyThrows
+    @Test
+    public void validateAPartWithExchangedQuantity() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        board.player1 = player1;
+
+        var result = new Piece[4][10];
+        List<String> piecesRepresentations = new ArrayList<>();
+        for (QuantityPerPiece piece : QuantityPerPiece.values()) {
+            int quantity = piece.getQuantity();
+            if (piece.getCode().equals("s")) {
+                quantity--;
+            } else if (piece.getCode().equals("M")) {
+                quantity++;
+            }
+            for (int i = 0; i < quantity; i++) {
+                piecesRepresentations.add(piece.getCode());
+            }
+        }
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 10; j++) {
+                try {
+                    String pieceRepresentation = piecesRepresentations.get(index);
+                    result[i][j] = PieceFactory.createPiece(pieceRepresentation, player1.getPlayerName(), board);
+                    index++;
+                } catch (Exception ignored) {};
+            }
+        }
+
+        var player1SetupIsValid = board.addPlayerSetup(result, 1);
+        assertFalse(player1SetupIsValid);
+    }
+
+    @SneakyThrows
+    @Test
+    public void validateSetupWithInvalidArray() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        board.player1 = player1;
+
+        var result = new Piece[3][10];
+        List<String> piecesRepresentations = new ArrayList<>();
+        for (QuantityPerPiece piece : QuantityPerPiece.values()) {
+            int quantity = piece.getQuantity();
+            if (piece.getCode().equals("s")) {
+                quantity--;
+            } else if (piece.getCode().equals("M")) {
+                quantity++;
+            }
+            for (int i = 0; i < quantity; i++) {
+                piecesRepresentations.add(piece.getCode());
+            }
+        }
+        int index = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 10; j++) {
+                try {
+                    String pieceRepresentation = piecesRepresentations.get(index);
+                    result[i][j] = PieceFactory.createPiece(pieceRepresentation, player1.getPlayerName(), board);
+                    index++;
+                } catch (Exception ignored) {};
+            }
+        }
+
+        var player1SetupIsValid = board.addPlayerSetup(result, 1);
+        assertFalse(player1SetupIsValid);
     }
 }
