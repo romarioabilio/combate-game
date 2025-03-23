@@ -5,9 +5,7 @@ import game.feedbacks.DefeatFeedback;
 import game.feedbacks.Feedback;
 import game.feedbacks.InvalidMoveFeedback;
 import game.feedbacks.MoveFeedback;
-import game.pieces.Major;
-import game.pieces.PieceAction;
-import game.pieces.Soldier;
+import game.pieces.*;
 import game.players.SimplePlayer;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -217,5 +215,151 @@ public class SoldierMovieTest {
         assertNotNull(board.getPiece(0, 1));
         assertEquals(board.getPiece(0, 1).getPlayer(), player1.getPlayerName());
         assertNull(board.getPiece(1, 4));
+    }
+
+    @SneakyThrows
+    @Test
+    public void soldierMoveValidCellsBack() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        SimplePlayer player2 = new SimplePlayer("player2");
+        board.player1 = player1;
+        board.player2 = player2;
+
+        Soldier s = new Soldier("player1", board);
+        board.setPiece(5, 8, s);
+        SecretAgent sa = new SecretAgent("player1", board);
+        board.setPiece(3, 7, sa);
+        General g = new General("player1", board);
+        board.setPiece(3, 9, g);
+        Lieutenant l = new Lieutenant("player1", board);
+        board.setPiece(2, 8, l);
+
+        Soldier s2 = new Soldier("player2", board);
+        board.setPiece(6, 8, s2);
+        Sargent sg = new Sargent("player2", board);
+        board.setPiece(6, 7, sg);
+        Soldier s3 = new Soldier("player2", board);
+        board.setPiece(6, 9, s3);
+
+
+        PieceAction action = new PieceAction(s, 3, 8);
+        Feedback roundFeedback = board.executeAction(action);
+        assertInstanceOf(MoveFeedback.class, roundFeedback);
+        assertNotNull(board.getPiece(3, 8));
+        assertEquals(board.getPiece(3, 8).getPlayer(), player1.getPlayerName());
+        assertNull(board.getPiece(5, 8));
+    }
+
+    @SneakyThrows
+    @Test
+    public void soldierMoveInvalidCellsBack() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        SimplePlayer player2 = new SimplePlayer("player2");
+        board.player1 = player1;
+        board.player2 = player2;
+
+        Soldier s = new Soldier("player1", board);
+        board.setPiece(5, 8, s);
+        Soldier s2 = new Soldier("player1", board);
+        board.setPiece(3, 8, s2);
+        SecretAgent sa = new SecretAgent("player1", board);
+        board.setPiece(3, 7, sa);
+        General g = new General("player1", board);
+        board.setPiece(3, 9, g);
+        Lieutenant l = new Lieutenant("player1", board);
+        board.setPiece(2, 8, l);
+
+        Soldier s3 = new Soldier("player2", board);
+        board.setPiece(6, 8, s3);
+        Sargent sg = new Sargent("player2", board);
+        board.setPiece(6, 7, sg);
+        Soldier s4 = new Soldier("player2", board);
+        board.setPiece(6, 9, s4);
+
+
+        PieceAction action = new PieceAction(s, 3, 8);
+        Feedback roundFeedback = board.executeAction(action);
+        assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
+        assertEquals(board.getPiece(3, 8).getPlayer(), player1.getPlayerName());
+        assertEquals(board.getPiece(5, 8).getPlayer(), player1.getPlayerName());
+        assertNotNull(board.getPiece(3, 8));
+        assertNotNull(board.getPiece(5, 8));
+    }
+
+    @SneakyThrows
+    @Test
+    public void soldierMoveValidCellsToTheLeft() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        SimplePlayer player2 = new SimplePlayer("player2");
+        board.player1 = player1;
+        board.player2 = player2;
+
+        Soldier s = new Soldier("player1", board);
+        board.setPiece(3, 9, s);
+        Soldier s2 = new Soldier("player1", board);
+        board.setPiece(2, 9, s2);
+        SecretAgent sa = new SecretAgent("player1", board);
+        board.setPiece(2, 8, sa);
+        General g = new General("player1", board);
+        board.setPiece(2, 7, g);
+        Lieutenant l = new Lieutenant("player1", board);
+        board.setPiece(3, 6, l);
+
+        Soldier s3 = new Soldier("player2", board);
+        board.setPiece(6, 8, s3);
+        Sargent sg = new Sargent("player2", board);
+        board.setPiece(6, 7, sg);
+        Soldier s4 = new Soldier("player2", board);
+        board.setPiece(6, 9, s4);
+
+
+        PieceAction action = new PieceAction(s, 3, 7);
+        Feedback roundFeedback = board.executeAction(action);
+        assertInstanceOf(MoveFeedback.class, roundFeedback);
+        assertEquals(board.getPiece(3, 7).getPlayer(), player1.getPlayerName());
+        assertNotNull(board.getPiece(3, 7));
+        assertNull(board.getPiece(3, 9));
+    }
+
+    @SneakyThrows
+    @Test
+    public void soldierMoveInvalidCellsToTheLeft() {
+        Board board = new Board();
+        SimplePlayer player1 = new SimplePlayer("player1");
+        SimplePlayer player2 = new SimplePlayer("player2");
+        board.player1 = player1;
+        board.player2 = player2;
+
+        Soldier s = new Soldier("player1", board);
+        board.setPiece(3, 9, s);
+        Prisoner p = new Prisoner("player1", board);
+        board.setPiece(3, 7, p);
+        Soldier s2 = new Soldier("player1", board);
+        board.setPiece(2, 9, s2);
+        SecretAgent sa = new SecretAgent("player1", board);
+        board.setPiece(2, 8, sa);
+        General g = new General("player1", board);
+        board.setPiece(2, 7, g);
+        Lieutenant l = new Lieutenant("player1", board);
+        board.setPiece(3, 6, l);
+
+        Soldier s3 = new Soldier("player2", board);
+        board.setPiece(6, 8, s3);
+        Sargent sg = new Sargent("player2", board);
+        board.setPiece(6, 7, sg);
+        Soldier s4 = new Soldier("player2", board);
+        board.setPiece(6, 9, s4);
+
+
+        PieceAction action = new PieceAction(s, 3, 7);
+        Feedback roundFeedback = board.executeAction(action);
+        assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
+        assertEquals(board.getPiece(3, 7).getPlayer(), player1.getPlayerName());
+        assertEquals(board.getPiece(3, 9).getPlayer(), player1.getPlayerName());
+        assertNotNull(board.getPiece(3, 7));
+        assertNotNull(board.getPiece(3, 9));
     }
 }

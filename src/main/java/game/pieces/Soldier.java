@@ -29,8 +29,8 @@ public class Soldier extends Piece {
             return super.canMove(newX, newY);
         }
 
-        dx = dy == 0 ? 1 : 0;
-        dy = dx == 0 ? 1 : 0;
+        dx = Integer.compare(newX, posX);
+        dy = Integer.compare(newY, posY);
         int currentX = posX;
         int currentY = posY;
         while (currentX != newX || currentY != newY) {
