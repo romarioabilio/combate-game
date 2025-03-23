@@ -59,13 +59,14 @@ public class Game {
         Random rand = new Random();
         boolean actualPlayer = rand.nextBoolean();
 
+        Feedback roundFeedback = null;
+        Feedback lastPlayer1Feedback = null;
+        Feedback lastPlayer2Feedback = null;
+
         game:
         while (true) {
             System.out.println("Rodada " + this.getRound() + ":");
 
-            Feedback roundFeedback = null;
-            Feedback lastPlayer1Feedback = null;
-            Feedback lastPlayer2Feedback = null;
             for (int i = 0; i < 2; i++) {
                 if (actualPlayer) {
                     // Jogada do Player1
