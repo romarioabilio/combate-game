@@ -115,7 +115,7 @@ public class BoardValidationTest {
         PieceAction action = new PieceAction(cp, 0, 1);
         Feedback roundFeedback = board.executeAction(action);
 
-        assertEquals("Jogada inválida: player1 moveu a mesma peça mais de 3 vezes\nPassou a vez!", roundFeedback.getMessage());
+        assertEquals("Jogada inválida: player1 moveu a mesma peça mais de 3 vezes, CP em [A, 2]\nPassou a vez!", roundFeedback.getMessage());
         assertInstanceOf(InvalidMoveFeedback.class, roundFeedback);
     }
 

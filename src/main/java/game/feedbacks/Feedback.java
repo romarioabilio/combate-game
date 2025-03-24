@@ -16,7 +16,7 @@ public abstract class Feedback {
         this.piece = piece;
     }
 
-    static String convertIntToAlfa(int value) {
+    public static String convertIntToAlfa(int value) {
         if (value < 0 || value > 26) {
             throw new IllegalArgumentException("Número deve estar entre 1 e 26");
         }

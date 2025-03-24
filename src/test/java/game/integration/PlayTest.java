@@ -67,7 +67,7 @@ public class PlayTest {
         assertNull(board.getPiece(2, 2));
 
         Prisoner ps = new Prisoner("player1", board);
-        board.setPiece(3, 2, l);
+        board.setPiece(3, 2, ps);
 
         PieceAction action2 = new PieceAction(ps, 2, 2);
         Feedback roundFeedback2 = board.executeAction(action2);

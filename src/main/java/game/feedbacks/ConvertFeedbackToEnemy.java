@@ -5,7 +5,7 @@ import game.pieces.OpponentPiece;
 public class ConvertFeedbackToEnemy {
     public static Feedback convert(Feedback feedback) {
         if (feedback instanceof InvalidMoveFeedback) {
-            return new InvalidMoveFeedback();
+            return new InvalidMoveFeedback(feedback.getMessage(), false);
         }
 
         if (feedback instanceof MoveFeedback) {

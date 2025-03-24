@@ -9,6 +9,8 @@ import game.players.Player;
 
 import java.util.*;
 
+import static game.feedbacks.Feedback.convertIntToAlfa;
+
 public class Board {
     private static final int MAX_NUMBER_OF_MOVES = 5000;
 
@@ -227,7 +229,7 @@ public class Board {
         numberMoves++;
 
         if (action == null || action.getPiece() == null) {
-            return new InvalidMoveFeedback();
+            return new InvalidMoveFeedback("Não há peça selecionada");
         }
 
         try {
@@ -240,7 +242,7 @@ public class Board {
                 return pieceOriginal.move(newPosX, newPosY, this);
             }
 
-            return new InvalidMoveFeedback(String.format("%s moveu a mesma peça mais de 3 vezes, %s em [%d, %d]", piece.getPlayer(), piece.getRepresentation(),piece.getPosX(), piece.getPosY()));
+            return new InvalidMoveFeedback(String.format("%s moveu a mesma peça mais de 3 vezes, %s em [%s, %d]", pieceOriginal.getPlayer(), pieceOriginal.getRepresentation(), convertIntToAlfa(pieceOriginal.getPosX()), pieceOriginal.getPosY()));
         } catch (Exception e) {
             return new InvalidMoveFeedback(e.getMessage());
         }
