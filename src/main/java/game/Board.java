@@ -239,7 +239,7 @@ public class Board {
                 return piece.move(newPosX, newPosY, this);
             }
 
-            return new InvalidMoveFeedback(String.format("%s moveu a mesma peça mais de 3 vezes", piece.getPlayer()));
+            return new InvalidMoveFeedback(String.format("%s moveu a mesma peça mais de 3 vezes, %s em [%d, %d]", piece.getPlayer(), piece.getRepresentation(),piece.getPosX(), piece.getPosY()));
         } catch (Exception e) {
             return new InvalidMoveFeedback(e.getMessage());
         }
