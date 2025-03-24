@@ -232,11 +232,12 @@ public class Board {
 
         try {
             Piece piece = action.getPiece();
+            Piece pieceOriginal = board[piece.getPosX()][piece.getPosY()];
             int newPosX = action.getNewPosX();
             int newPosY = action.getNewPosY();
 
-            if (addLastPiecesPlayed(piece)) {
-                return piece.move(newPosX, newPosY, this);
+            if (addLastPiecesPlayed(pieceOriginal)) {
+                return pieceOriginal.move(newPosX, newPosY, this);
             }
 
             return new InvalidMoveFeedback(String.format("%s moveu a mesma peça mais de 3 vezes, %s em [%d, %d]", piece.getPlayer(), piece.getRepresentation(),piece.getPosX(), piece.getPosY()));
