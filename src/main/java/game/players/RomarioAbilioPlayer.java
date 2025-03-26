@@ -9,7 +9,7 @@ import game.pieces.QuantityPerPiece;
 
 import java.util.*;
 
-public class AgenteProbabilistico implements Player {
+public class RomarioAbilioPlayer implements Player {
     private final String nomeJogador;
     private Board tabuleiroOcultoAnterior;
     private Map<String, Map<String, Double>> estadoCrença;
@@ -24,7 +24,7 @@ public class AgenteProbabilistico implements Player {
     private int turnCount = 0; 
     private static final int MAX_TURNS = 2500; 
 
-    public AgenteProbabilistico(String nomeJogador) {
+    public RomarioAbilioPlayer(String nomeJogador) {
         this.nomeJogador = nomeJogador;
         this.estadoCrença = new HashMap<>();
         this.knownOpponentPieces = new HashMap<>();
